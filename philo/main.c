@@ -19,13 +19,14 @@ void	*philo_routine(void *arg)
 	t_philo	*this;
 
 	this = (t_philo *)arg;
+	if (this->number % 2 == 0)
+		usleep(100);
 	pthread_mutex_unlock(this->right_fork);
 	pthread_mutex_unlock(this->left_fork);
-	usleep(1000);
-	printf("Am philo %d, forks = {%p, %p}\n", this->number, this->left_fork, this->right_fork);
+	printf("Am philo %d, forks = {%x, %x}\n", this->number, ((unsigned int)this->left_fork & 0xFF), ((int)this->right_fork & 0xFF));
 	pthread_mutex_lock(this->left_fork);
 	pthread_mutex_lock(this->right_fork);
-	exit(0);
+	return (NULL);
 }
 
 void	serve_forks(pthread_mutex_t **forks, int nb_philos)
@@ -35,7 +36,7 @@ void	serve_forks(pthread_mutex_t **forks, int nb_philos)
 		pthread_mutex_init(*forks + nb_philos, NULL);
 }
 
-void	serve_philos(t_philo **philos, pthread_mutex_t *forks,int nb_philos)
+void	serve_philos(t_philo **philos, pthread_mutex_t *forks,int nb_philos, t_info *info)
 {
 	int	i;
 
@@ -44,9 +45,9 @@ void	serve_philos(t_philo **philos, pthread_mutex_t *forks,int nb_philos)
 	while (i < nb_philos)
 	{
 		(*philos)[i].number = i + 1;
-		// (*philos)[i].thread = PTHREAD_CREATE_JOINABLE;
 		(*philos)[i].left_fork = forks + i;
 		(*philos)[i].right_fork = forks + (i + 1) % nb_philos;
+		(*philos)[i].info = info;
 		i++;
 	}
 }
@@ -73,10 +74,9 @@ int	main(int argc, char **argv)
 	parse_args(argc - 1, argv + 1, &info);
 	print_info(&info);
 	serve_forks(&forks, info.nb_of_philos);
-	serve_philos(&philos, forks, info.nb_of_philos);
+	serve_philos(&philos, forks, info.nb_of_philos, &info);
 	start_sim(philos, info.nb_of_philos);
-	// while (info.nb_of_philos--)
-	// 	pthread_join(philos[info.nb_of_philos].thread, NULL);
-	pthread_join(philos[0].thread, NULL);
+	while (info.nb_of_philos--)
+		pthread_join(philos[info.nb_of_philos].thread, NULL);
 	return (0);
 }
