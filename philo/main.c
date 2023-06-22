@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:44:46 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/21 20:54:08 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/22 02:39:10 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	*routine_dialo(void *arg)
 		printf("Ana dak khona\n");
 	}
 }
-void	routine_diali()
+void	routine_diali(void)
 {
+	// pthread_mutex_lock()
 	while (1)
 	{
 		usleep(2000 * 1000);
@@ -32,10 +33,18 @@ void	routine_diali()
 	}
 }
 
+int	serve_spoons(pthread_mutex_t **spoons, int nb_philos)
+{
+	*spoons = malloc(nb_philos * sizeof(pthread_mutex_t));
+	while (nb_philos--)
+		pthread_mutex_init(*spoons + nb_philos, NULL);
+}
+
 int	main(int argc, char **argv)
 {
-	t_info		info;
-	pthread_t	a_thread;
+	t_info			info;
+	pthread_t		a_thread;
+	pthread_mutex_t	*spoons;
 
 	if (argc != 5 && argc != 6)
 	{
@@ -43,9 +52,8 @@ int	main(int argc, char **argv)
 		return (-1);
 	}
 	printf("Hello Philosophers\n");
-	pthread_create(&a_thread, NULL, routine_dialo, NULL);
-	routine_diali();
 	parse_args(argc - 1, argv + 1, &info);
 	print_info(&info);
+	serve_spoons(spoons, info.nb_of_philos);
 	return (0);
 }
