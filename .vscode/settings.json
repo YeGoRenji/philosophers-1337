@@ -1,8 +1,0 @@
-{
-	"files.associations": {
-		"structs.h": "c",
-		"pthread.h": "c",
-		"stdio.h": "c",
-		"parser.h": "c"
-	}
-}

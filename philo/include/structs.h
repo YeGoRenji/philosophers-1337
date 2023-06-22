@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 17:15:56 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/21 20:26:06 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/22 12:52:36 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,13 @@ typedef struct s_info
 	int	time_to_sleep;
 	int	min_eats;
 }				t_info;
+
+typedef struct philo
+{
+	int				number;
+	pthread_t		thread;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+}				t_philo;
 
 #endif

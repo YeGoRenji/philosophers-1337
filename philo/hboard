@@ -1,0 +1,709 @@
+PTHREADS(7)               Linux Programmer's Manual               PTHREADS(7)
+
+NNAAMMEE
+       pthreads - POSIX threads
+
+DDEESSCCRRIIPPTTIIOONN
+       POSIX.1  specifies  a  set of interfaces (functions, header files) for
+       threaded programming commonly known as POSIX threads, or Pthreads.   A
+       single  process can contain multiple threads, all of which are execut‐
+       ing the same program.  These threads  share  the  same  global  memory
+       (data and heap segments), but each thread has its own stack (automatic
+       variables).
+
+       POSIX.1 also requires that threads share a range of  other  attributes
+       (i.e., these attributes are process-wide rather than per-thread):
+
+       -  process ID
+
+       -  parent process ID
+
+       -  process group ID and session ID
+
+       -  controlling terminal
+
+       -  user and group IDs
+
+       -  open file descriptors
+
+       -  record locks (see ffccnnttll(2))
+
+       -  signal dispositions
+
+       -  file mode creation mask (uummaasskk(2))
+
+       -  current directory (cchhddiirr(2)) and root directory (cchhrroooott(2))
+
+       -  interval timers (sseettiittiimmeerr(2)) and POSIX timers (ttiimmeerr__ccrreeaattee(2))
+
+       -  nice value (sseettpprriioorriittyy(2))
+
+       -  resource limits (sseettrrlliimmiitt(2))
+
+       -  measurements  of  the  consumption  of  CPU time (ttiimmeess(2)) and re‐
+          sources (ggeettrruussaaggee(2))
+
+       As well as the stack, POSIX.1 specifies that various other  attributes
+       are distinct for each thread, including:
+
+       -  thread ID (the _p_t_h_r_e_a_d___t data type)
+
+       -  signal mask (pptthhrreeaadd__ssiiggmmaasskk(3))
+
+       -  the _e_r_r_n_o variable
+
+       -  alternate signal stack (ssiiggaallttssttaacckk(2))
+
+       -  real-time scheduling policy and priority (sscchheedd(7))
+
+       The following Linux-specific features are also per-thread:
+
+       -  capabilities (see ccaappaabbiilliittiieess(7))
+
+       -  CPU affinity (sscchheedd__sseettaaffffiinniittyy(2))
+
+   PPtthhrreeaaddss ffuunnccttiioonn rreettuurrnn vvaalluueess
+       Most  pthreads  functions  return 0 on success, and an error number on
+       failure.  The error numbers that can be returned have the same meaning
+       as  the  error  numbers returned in _e_r_r_n_o by conventional system calls
+       and C library functions.  Note that the pthreads functions do not  set
+       _e_r_r_n_o.   For  each of the pthreads functions that can return an error,
+       POSIX.1-2001 specifies that the function can never fail with the error
+       EEIINNTTRR.
+
+   TThhrreeaadd IIDDss
+       Each  of  the  threads  in  a  process  has a unique thread identifier
+       (stored in the type _p_t_h_r_e_a_d___t).  This identifier is  returned  to  the
+       caller  of  pptthhrreeaadd__ccrreeaattee(3),  and a thread can obtain its own thread
+       identifier using pptthhrreeaadd__sseellff(3).
+
+       Thread IDs are guaranteed to be unique only within a process.  (In all
+       pthreads  functions that accept a thread ID as an argument, that ID by
+       definition refers to a thread in the same process as the caller.)
+
+       The system may reuse a thread ID after a terminated  thread  has  been
+       joined,  or  a detached thread has terminated.  POSIX says: "If an ap‐
+       plication attempts to use a thread ID whose lifetime  has  ended,  the
+       behavior is undefined."
+
+   TThhrreeaadd--ssaaffee ffuunnccttiioonnss
+       A  thread-safe  function  is one that can be safely (i.e., it will de‐
+       liver the same results regardless of whether it is) called from multi‐
+       ple threads at the same time.
+
+       POSIX.1-2001  and POSIX.1-2008 require that all functions specified in
+       the standard shall be thread-safe, except for the following functions:
+
+           asctime()
+           basename()
+           catgets()
+           crypt()
+           ctermid() if passed a non-NULL argument
+           ctime()
+           dbm_clearerr()
+           dbm_close()
+           dbm_delete()
+           dbm_error()
+           dbm_fetch()
+           dbm_firstkey()
+           dbm_nextkey()
+           dbm_open()
+           dbm_store()
+           dirname()
+           dlerror()
+           drand48()
+           ecvt() [POSIX.1-2001 only (function removed in POSIX.1-2008)]
+           encrypt()
+           endgrent()
+           endpwent()
+           endutxent()
+           fcvt() [POSIX.1-2001 only (function removed in POSIX.1-2008)]
+           ftw()
+           gcvt() [POSIX.1-2001 only (function removed in POSIX.1-2008)]
+           getc_unlocked()
+           getchar_unlocked()
+           getdate()
+           getenv()
+           getgrent()
+           getgrgid()
+           getgrnam()
+           gethostbyaddr() [POSIX.1-2001 only (function removed in
+                            POSIX.1-2008)]
+           gethostbyname() [POSIX.1-2001 only (function removed in
+                            POSIX.1-2008)]
+           gethostent()
+           getlogin()
+           getnetbyaddr()
+           getnetbyname()
+           getnetent()
+           getopt()
+           getprotobyname()
+           getprotobynumber()
+           getprotoent()
+           getpwent()
+           getpwnam()
+           getpwuid()
+           getservbyname()
+           getservbyport()
+           getservent()
+           getutxent()
+           getutxid()
+           getutxline()
+           gmtime()
+           hcreate()
+           hdestroy()
+           hsearch()
+           inet_ntoa()
+           l64a()
+           lgamma()
+           lgammaf()
+           lgammal()
+           localeconv()
+           localtime()
+           lrand48()
+           mrand48()
+           nftw()
+           nl_langinfo()
+           ptsname()
+           putc_unlocked()
+           putchar_unlocked()
+           putenv()
+           pututxline()
+           rand()
+           readdir()
+           setenv()
+           setgrent()
+           setkey()
+           setpwent()
+           setutxent()
+           strerror()
+           strsignal() [Added in POSIX.1-2008]
+           strtok()
+           system() [Added in POSIX.1-2008]
+           tmpnam() if passed a non-NULL argument
+           ttyname()
+           unsetenv()
+           wcrtomb() if its final argument is NULL
+           wcsrtombs() if its final argument is NULL
+           wcstombs()
+           wctomb()
+
+   AAssyynncc--ccaanncceell--ssaaffee ffuunnccttiioonnss
+       An async-cancel-safe function is one that can be safely called  in  an
+       application   where   asynchronous   cancelability   is  enabled  (see
+       pptthhrreeaadd__sseettccaanncceellssttaattee(3)).
+
+       Only the following functions are required to be  async-cancel-safe  by
+       POSIX.1-2001 and POSIX.1-2008:
+
+           pthread_cancel()
+           pthread_setcancelstate()
+           pthread_setcanceltype()
+
+   CCaanncceellllaattiioonn ppooiinnttss
+       POSIX.1 specifies that certain functions must, and certain other func‐
+       tions may, be cancellation points.  If a  thread  is  cancelable,  its
+       cancelability  type is deferred, and a cancellation request is pending
+       for the thread, then the thread is canceled when it calls  a  function
+       that is a cancellation point.
+
+       The  following  functions  are  required  to be cancellation points by
+       POSIX.1-2001 and/or POSIX.1-2008:
+
+           accept()
+           aio_suspend()
+           clock_nanosleep()
+           close()
+           connect()
+           creat()
+           fcntl() F_SETLKW
+           fdatasync()
+           fsync()
+           getmsg()
+           getpmsg()
+           lockf() F_LOCK
+           mq_receive()
+           mq_send()
+           mq_timedreceive()
+           mq_timedsend()
+           msgrcv()
+           msgsnd()
+           msync()
+           nanosleep()
+           open()
+           openat() [Added in POSIX.1-2008]
+           pause()
+           poll()
+           pread()
+           pselect()
+           pthread_cond_timedwait()
+           pthread_cond_wait()
+           pthread_join()
+           pthread_testcancel()
+           putmsg()
+           putpmsg()
+           pwrite()
+           read()
+           readv()
+           recv()
+           recvfrom()
+           recvmsg()
+           select()
+           sem_timedwait()
+           sem_wait()
+           send()
+           sendmsg()
+           sendto()
+           sigpause() [POSIX.1-2001 only (moves to "may" list in POSIX.1-2008)]
+           sigsuspend()
+           sigtimedwait()
+           sigwait()
+           sigwaitinfo()
+           sleep()
+           system()
+           tcdrain()
+           usleep() [POSIX.1-2001 only (function removed in POSIX.1-2008)]
+           wait()
+           waitid()
+           waitpid()
+           write()
+           writev()
+
+       The following  functions  may  be  cancellation  points  according  to
+       POSIX.1-2001 and/or POSIX.1-2008:
+
+           access()
+           asctime()
+           asctime_r()
+           catclose()
+           catgets()
+           catopen()
+           chmod() [Added in POSIX.1-2008]
+           chown() [Added in POSIX.1-2008]
+           closedir()
+           closelog()
+           ctermid()
+           ctime()
+           ctime_r()
+           dbm_close()
+           dbm_delete()
+           dbm_fetch()
+           dbm_nextkey()
+           dbm_open()
+           dbm_store()
+           dlclose()
+           dlopen()
+           dprintf() [Added in POSIX.1-2008]
+           endgrent()
+           endhostent()
+           endnetent()
+           endprotoent()
+           endpwent()
+           endservent()
+           endutxent()
+           faccessat() [Added in POSIX.1-2008]
+           fchmod() [Added in POSIX.1-2008]
+           fchmodat() [Added in POSIX.1-2008]
+           fchown() [Added in POSIX.1-2008]
+           fchownat() [Added in POSIX.1-2008]
+           fclose()
+           fcntl() (for any value of cmd argument)
+           fflush()
+           fgetc()
+           fgetpos()
+           fgets()
+           fgetwc()
+           fgetws()
+           fmtmsg()
+           fopen()
+           fpathconf()
+           fprintf()
+           fputc()
+           fputs()
+           fputwc()
+           fputws()
+           fread()
+           freopen()
+           fscanf()
+           fseek()
+           fseeko()
+           fsetpos()
+           fstat()
+           fstatat() [Added in POSIX.1-2008]
+           ftell()
+           ftello()
+           ftw()
+           futimens() [Added in POSIX.1-2008]
+           fwprintf()
+           fwrite()
+           fwscanf()
+           getaddrinfo()
+           getc()
+           getc_unlocked()
+           getchar()
+           getchar_unlocked()
+           getcwd()
+           getdate()
+           getdelim() [Added in POSIX.1-2008]
+           getgrent()
+           getgrgid()
+           getgrgid_r()
+           getgrnam()
+           getgrnam_r()
+           gethostbyaddr() [POSIX.1-2001 only (function removed in
+                            POSIX.1-2008)]
+           gethostbyname() [POSIX.1-2001 only (function removed in
+                            POSIX.1-2008)]
+           gethostent()
+           gethostid()
+           gethostname()
+           getline() [Added in POSIX.1-2008]
+           getlogin()
+           getlogin_r()
+           getnameinfo()
+           getnetbyaddr()
+           getnetbyname()
+           getnetent()
+           getopt() (if opterr is nonzero)
+           getprotobyname()
+           getprotobynumber()
+           getprotoent()
+           getpwent()
+           getpwnam()
+           getpwnam_r()
+           getpwuid()
+           getpwuid_r()
+           gets()
+           getservbyname()
+           getservbyport()
+           getservent()
+           getutxent()
+           getutxid()
+           getutxline()
+           getwc()
+           getwchar()
+           getwd() [POSIX.1-2001 only (function removed in POSIX.1-2008)]
+           glob()
+           iconv_close()
+           iconv_open()
+           ioctl()
+           link()
+           linkat() [Added in POSIX.1-2008]
+           lio_listio() [Added in POSIX.1-2008]
+           localtime()
+           localtime_r()
+           lockf() [Added in POSIX.1-2008]
+           lseek()
+           lstat()
+           mkdir() [Added in POSIX.1-2008]
+           mkdirat() [Added in POSIX.1-2008]
+           mkdtemp() [Added in POSIX.1-2008]
+           mkfifo() [Added in POSIX.1-2008]
+           mkfifoat() [Added in POSIX.1-2008]
+           mknod() [Added in POSIX.1-2008]
+           mknodat() [Added in POSIX.1-2008]
+           mkstemp()
+           mktime()
+           nftw()
+           opendir()
+           openlog()
+           pathconf()
+           pclose()
+           perror()
+           popen()
+           posix_fadvise()
+           posix_fallocate()
+           posix_madvise()
+           posix_openpt()
+           posix_spawn()
+           posix_spawnp()
+           posix_trace_clear()
+           posix_trace_close()
+           posix_trace_create()
+           posix_trace_create_withlog()
+           posix_trace_eventtypelist_getnext_id()
+           posix_trace_eventtypelist_rewind()
+           posix_trace_flush()
+           posix_trace_get_attr()
+           posix_trace_get_filter()
+           posix_trace_get_status()
+           posix_trace_getnext_event()
+           posix_trace_open()
+           posix_trace_rewind()
+           posix_trace_set_filter()
+           posix_trace_shutdown()
+           posix_trace_timedgetnext_event()
+           posix_typed_mem_open()
+           printf()
+           psiginfo() [Added in POSIX.1-2008]
+           psignal() [Added in POSIX.1-2008]
+           pthread_rwlock_rdlock()
+           pthread_rwlock_timedrdlock()
+           pthread_rwlock_timedwrlock()
+           pthread_rwlock_wrlock()
+           putc()
+           putc_unlocked()
+           putchar()
+           putchar_unlocked()
+           puts()
+           pututxline()
+           putwc()
+           putwchar()
+           readdir()
+           readdir_r()
+           readlink() [Added in POSIX.1-2008]
+           readlinkat() [Added in POSIX.1-2008]
+           remove()
+           rename()
+           renameat() [Added in POSIX.1-2008]
+           rewind()
+           rewinddir()
+           scandir() [Added in POSIX.1-2008]
+           scanf()
+           seekdir()
+           semop()
+           setgrent()
+           sethostent()
+           setnetent()
+           setprotoent()
+           setpwent()
+           setservent()
+           setutxent()
+           sigpause() [Added in POSIX.1-2008]
+           stat()
+           strerror()
+           strerror_r()
+           strftime()
+           symlink()
+           symlinkat() [Added in POSIX.1-2008]
+           sync()
+           syslog()
+           tmpfile()
+           tmpnam()
+           ttyname()
+           ttyname_r()
+           tzset()
+           ungetc()
+           ungetwc()
+           unlink()
+           unlinkat() [Added in POSIX.1-2008]
+           utime() [Added in POSIX.1-2008]
+           utimensat() [Added in POSIX.1-2008]
+           utimes() [Added in POSIX.1-2008]
+           vdprintf() [Added in POSIX.1-2008]
+           vfprintf()
+           vfwprintf()
+           vprintf()
+           vwprintf()
+           wcsftime()
+           wordexp()
+           wprintf()
+           wscanf()
+
+       An  implementation  may also mark other functions not specified in the
+       standard as cancellation points.  In particular, an implementation  is
+       likely  to mark any nonstandard function that may block as a cancella‐
+       tion point.  (This includes most functions that can touch files.)
+
+       It should be noted that even if an application is not using  asynchro‐
+       nous cancellation, that calling a function from the above list from an
+       asynchronous signal handler may cause the equivalent  of  asynchronous
+       cancellation.   The  underlying  user code may not expect asynchronous
+       cancellation and the state of the user data may  become  inconsistent.
+       Therefore  signals  should be used with caution when entering a region
+       of deferred cancellation.
+
+   CCoommppiilliinngg oonn LLiinnuuxx
+       On Linux, programs that use the Pthreads API should be compiled  using
+       _c_c _-_p_t_h_r_e_a_d.
+
+   LLiinnuuxx iimmpplleemmeennttaattiioonnss ooff PPOOSSIIXX tthhrreeaaddss
+       Over time, two threading implementations have been provided by the GNU
+       C library on Linux:
+
+       LLiinnuuxxTThhrreeaaddss
+              This is the original Pthreads implementation.  Since glibc 2.4,
+              this implementation is no longer supported.
+
+       NNPPTTLL (Native POSIX Threads Library)
+              This is the modern Pthreads implementation.  By comparison with
+              LinuxThreads, NPTL provides closer conformance to the  require‐
+              ments  of the POSIX.1 specification and better performance when
+              creating large numbers of threads.   NPTL  is  available  since
+              glibc  2.3.2,  and  requires  features  that are present in the
+              Linux 2.6 kernel.
+
+       Both of these are so-called 1:1  implementations,  meaning  that  each
+       thread maps to a kernel scheduling entity.  Both threading implementa‐
+       tions employ the Linux cclloonnee(2) system call.  In NPTL, thread synchro‐
+       nization  primitives  (mutexes,  thread joining, and so on) are imple‐
+       mented using the Linux ffuutteexx(2) system call.
+
+   LLiinnuuxxTThhrreeaaddss
+       The notable features of this implementation are the following:
+
+       -  In addition to the main (initial) thread, and the threads that  the
+          program creates using pptthhrreeaadd__ccrreeaattee(3), the implementation creates
+          a "manager" thread.  This thread handles thread creation and termi‐
+          nation.   (Problems  can  result  if  this  thread is inadvertently
+          killed.)
+
+       -  Signals are used internally by the implementation.   On  Linux  2.2
+          and  later,  the  first  three real-time signals are used (see also
+          ssiiggnnaall(7)).  On older Linux kernels, SSIIGGUUSSRR11 and SSIIGGUUSSRR22 are  used.
+          Applications  must avoid the use of whichever set of signals is em‐
+          ployed by the implementation.
+
+       -  Threads do not share process IDs.  (In effect, LinuxThreads threads
+          are  implemented  as  processes  which  share more information than
+          usual, but which do not share a common process  ID.)   LinuxThreads
+          threads (including the manager thread) are visible as separate pro‐
+          cesses using ppss(1).
+
+       The LinuxThreads implementation deviates from the  POSIX.1  specifica‐
+       tion in a number of ways, including the following:
+
+       -  Calls to ggeettppiidd(2) return a different value in each thread.
+
+       -  Calls  to  ggeettppppiidd(2)  in threads other than the main thread return
+          the process ID of the manager thread; instead ggeettppppiidd(2)  in  these
+          threads  should  return  the  same  value as ggeettppppiidd(2) in the main
+          thread.
+
+       -  When one thread creates a new  child  process  using  ffoorrkk(2),  any
+          thread should be able to wwaaiitt(2) on the child.  However, the imple‐
+          mentation allows only the thread that created the child to  wwaaiitt(2)
+          on it.
+
+       -  When a thread calls eexxeeccvvee(2), all other threads are terminated (as
+          required by POSIX.1).  However, the resulting process has the  same
+          PID  as  the  thread that called eexxeeccvvee(2): it should have the same
+          PID as the main thread.
+
+       -  Threads do not share user and group IDs.  This can cause  complica‐
+          tions  with set-user-ID programs and can cause failures in Pthreads
+          functions if an  application  changes  its  credentials  using  ssee‐‐
+          tteeuuiidd(2) or similar.
+
+       -  Threads do not share a common session ID and process group ID.
+
+       -  Threads do not share record locks created using ffccnnttll(2).
+
+       -  The information returned by ttiimmeess(2) and ggeettrruussaaggee(2) is per-thread
+          rather than process-wide.
+
+       -  Threads do not share semaphore undo values (see sseemmoopp(2)).
+
+       -  Threads do not share interval timers.
+
+       -  Threads do not share a common nice value.
+
+       -  POSIX.1 distinguishes the notions of signals that are  directed  to
+          the  process as a whole and signals that are directed to individual
+          threads.  According to POSIX.1, a process-directed signal (sent us‐
+          ing  kkiillll(2), for example) should be handled by a single, arbitrar‐
+          ily selected thread within the process.  LinuxThreads does not sup‐
+          port  the  notion  of process-directed signals: signals may be sent
+          only to specific threads.
+
+       -  Threads have distinct alternate signal stack settings.  However,  a
+          new  thread's  alternate  signal stack settings are copied from the
+          thread that created it, so that the threads initially share an  al‐
+          ternate signal stack.  (A new thread should start with no alternate
+          signal stack defined.  If  two  threads  handle  signals  on  their
+          shared  alternate signal stack at the same time, unpredictable pro‐
+          gram failures are likely to occur.)
+
+   NNPPTTLL
+       With NPTL, all of the threads in a process  are  placed  in  the  same
+       thread  group; all members of a thread group share the same PID.  NPTL
+       does not employ a manager thread.
+
+       NPTL makes internal use of the first two real-time signals; these sig‐
+       nals cannot be used in applications.  See nnppttll(7) for further details.
+
+       NPTL still has at least one nonconformance with POSIX.1:
+
+       -  Threads do not share a common nice value.
+
+       Some NPTL nonconformances occur only with older kernels:
+
+       -  The information returned by ttiimmeess(2) and ggeettrruussaaggee(2) is per-thread
+          rather than process-wide (fixed in kernel 2.6.9).
+
+       -  Threads do not share resource limits (fixed in kernel 2.6.10).
+
+       -  Threads do not share interval timers (fixed in kernel 2.6.12).
+
+       -  Only the main thread is permitted to start a new session using sseett‐‐
+          ssiidd(2) (fixed in kernel 2.6.16).
+
+       -  Only  the  main  thread  is  permitted  to  make the process into a
+          process group leader using sseettppggiidd(2) (fixed in kernel 2.6.16).
+
+       -  Threads have distinct alternate signal stack settings.  However,  a
+          new  thread's  alternate  signal stack settings are copied from the
+          thread that created it, so that the threads initially share an  al‐
+          ternate signal stack (fixed in kernel 2.6.16).
+
+       Note the following further points about the NPTL implementation:
+
+       -  If  the  stack  size  soft  resource  limit (see the description of
+          RRLLIIMMIITT__SSTTAACCKK in sseettrrlliimmiitt(2)) is set to a value other  than  _u_n_l_i_m_‐
+          _i_t_e_d,  then  this  value  defines  the  default  stack size for new
+          threads.  To be effective, this limit must be set before  the  pro‐
+          gram  is  executed, perhaps using the _u_l_i_m_i_t _-_s shell built-in com‐
+          mand (_l_i_m_i_t _s_t_a_c_k_s_i_z_e in the C shell).
+
+   DDeetteerrmmiinniinngg tthhee tthhrreeaaddiinngg iimmpplleemmeennttaattiioonn
+       Since glibc 2.3.2, the ggeettccoonnff(1) command can be used to determine the
+       system's threading implementation, for example:
+
+           bash$ getconf GNU_LIBPTHREAD_VERSION
+           NPTL 2.3.4
+
+       With  older  glibc versions, a command such as the following should be
+       sufficient to determine the default threading implementation:
+
+           bash$ $( ldd /bin/ls | grep libc.so | awk '{print $3}' ) | \
+                           egrep -i 'threads|nptl'
+                   Native POSIX Threads Library by Ulrich Drepper et al
+
+   SSeelleeccttiinngg tthhee tthhrreeaaddiinngg iimmpplleemmeennttaattiioonn:: LLDD__AASSSSUUMMEE__KKEERRNNEELL
+       On systems with a glibc  that  supports  both  LinuxThreads  and  NPTL
+       (i.e.,  glibc 2.3._x), the LLDD__AASSSSUUMMEE__KKEERRNNEELL environment variable can be
+       used to override the dynamic linker's default choice of threading  im‐
+       plementation.   This  variable tells the dynamic linker to assume that
+       it is running on top of a particular kernel version.  By specifying  a
+       kernel  version that does not provide the support required by NPTL, we
+       can force the use of LinuxThreads.  (The most likely reason for  doing
+       this  is to run a (broken) application that depends on some nonconfor‐
+       mant behavior in LinuxThreads.)  For example:
+
+           bash$ $( LD_ASSUME_KERNEL=2.2.5 ldd /bin/ls | grep libc.so | \
+                           awk '{print $3}' ) | egrep -i 'threads|nptl'
+                   linuxthreads-0.10 by Xavier Leroy
+
+SSEEEE AALLSSOO
+       cclloonnee(2), ffoorrkk(2), ffuutteexx(2), ggeettttiidd(2), pprroocc(5), aattttrriibbuutteess(7),
+       ffuutteexx(7), nnppttll(7), ssiiggeevveenntt(7), ssiiggnnaall(7)
+
+       Various Pthreads manual pages, for example: pptthhrreeaadd__aattffoorrkk(3),
+       pptthhrreeaadd__aattttrr__iinniitt(3), pptthhrreeaadd__ccaanncceell(3), pptthhrreeaadd__cclleeaannuupp__ppuusshh(3),
+       pptthhrreeaadd__ccoonndd__ssiiggnnaall(3), pptthhrreeaadd__ccoonndd__wwaaiitt(3), pptthhrreeaadd__ccrreeaattee(3),
+       pptthhrreeaadd__ddeettaacchh(3), pptthhrreeaadd__eeqquuaall(3), pptthhrreeaadd__eexxiitt(3),
+       pptthhrreeaadd__kkeeyy__ccrreeaattee(3), pptthhrreeaadd__kkiillll(3), pptthhrreeaadd__mmuutteexx__lloocckk(3),
+       pptthhrreeaadd__mmuutteexx__uunnlloocckk(3), pptthhrreeaadd__mmuutteexxaattttrr__ddeessttrrooyy(3),
+       pptthhrreeaadd__mmuutteexxaattttrr__iinniitt(3), pptthhrreeaadd__oonnccee(3), pptthhrreeaadd__ssppiinn__iinniitt(3),
+       pptthhrreeaadd__ssppiinn__lloocckk(3), pptthhrreeaadd__rrwwlloocckkaattttrr__sseettkkiinndd__nnpp(3),
+       pptthhrreeaadd__sseettccaanncceellssttaattee(3), pptthhrreeaadd__sseettccaanncceellttyyppee(3),
+       pptthhrreeaadd__sseettssppeecciiffiicc(3), pptthhrreeaadd__ssiiggmmaasskk(3), pptthhrreeaadd__ssiiggqquueeuuee(3), and
+       pptthhrreeaadd__tteessttccaanncceell(3)
+
+CCOOLLOOPPHHOONN
+       This page is part of release 5.10 of the Linux _m_a_n_-_p_a_g_e_s project.  A
+       description of the project, information about reporting bugs, and the
+       latest version of this page, can be found at
+       https://www.kernel.org/doc/man-pages/.
+
+Linux                             2020-12-21                      PTHREADS(7)

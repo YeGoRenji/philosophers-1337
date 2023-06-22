@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:51:17 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/21 20:47:02 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/22 12:49:41 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,8 @@ int	is_valid(char *arg)
 int	check_args(int nb_args, char **args)
 {
 	while (nb_args--)
-	{
-		printf("Checking %s\n", args[nb_args]);
 		if (!is_valid(args[nb_args]))
 			return (0);
-	}
 	return (1);
 }
 

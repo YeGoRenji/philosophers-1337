@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 17:15:22 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/21 17:32:42 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/22 10:59:37 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ void	print_info(t_info *info)
 	printf("Time to eat : %dms\n", info->time_to_eat);
 	printf("Time to sleep : %dms\n", info->time_to_sleep);
 	if (info->min_eats != -1)
-		printf("Min Time to eat : %dms\n", info->min_eats);
+		printf("Min eats before stop : %d\n", info->min_eats);
 	printf("*********************************\n");
 }
