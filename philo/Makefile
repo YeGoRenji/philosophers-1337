@@ -12,8 +12,11 @@ SRCS_PARSER = ft_atoi.c \
 
 SRCS_DEBUG = debug.c
 
+SRCS_TIME = time_utils.c
+
 OBJS_FILES = $(SRCS_PARSER:.c=.o) \
 			 $(SRCS_DEBUG:.c=.o) \
+			 $(SRCS_TIME:.c=.o) \
 			 main.o
 
 OBJS = $(foreach obj, $(OBJS_FILES), $(OBJSFOLDER)$(obj))
@@ -40,6 +43,10 @@ $(OBJSFOLDER)%.o: src/parser/%.c include/parser.h $(GLOBAL_HEADERS)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJSFOLDER)%.o: src/debug/%.c include/debug.h $(GLOBAL_HEADERS)
+	@echo "Compiling $<..."
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJSFOLDER)%.o: src/time_utils/%.c include/time_utils.h $(GLOBAL_HEADERS)
 	@echo "Compiling $<..."
 	@$(CC) $(CFLAGS) -c $< -o $@
 

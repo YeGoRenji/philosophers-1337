@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:51:17 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/24 02:57:58 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:01:50 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ int	parse_args(int nb_args, char **args, t_info *info)
 	int	i;
 
 	if (!check_args(nb_args, args))
-		(write(2, "Error: Invalid Arg\n", 19), exit(-1));
+	{
+		write(2, "Error: Invalid Arg\n", 19);
+		return (0);
+	}
 	struc_members = (int *)info;
 	i = 0;
 	while (i < nb_args)
@@ -47,7 +50,7 @@ int	parse_args(int nb_args, char **args, t_info *info)
 		struc_members[i] = ft_atoi(args[i]);
 		i++;
 	}
-	if (!(nb_args == 5))
+	if (nb_args != 5)
 		info->min_eats = -1;
 	return (1);
 }
