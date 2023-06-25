@@ -33,7 +33,6 @@ void	print(t_philo *philo, char *doing, int ded)
 		philo->number,
 		doing
 	);
-	(void)ded;
 	if (!ded)
 		pthread_mutex_unlock(philo->print_mutex);
 }
@@ -45,7 +44,7 @@ void	*philo_routine(void *arg)
 
 	this = (t_philo *)arg;
 	if (this->number % 2 == 0)
-		usleep(100);
+		usleep(1000 * this->info->time_to_eat / 2);
 	return_val = malloc(sizeof(int));
 	*return_val = 0;
 	while (1)
@@ -53,9 +52,10 @@ void	*philo_routine(void *arg)
 		print(this, "is thinking", 0);
 
 		pthread_mutex_lock(this->right_fork);
+		print(this, "has taken right fork", 0); //! Remove Right
 		pthread_mutex_lock(this->left_fork);
+		print(this, "has taken left fork", 0); //! Remove left
 
-		print(this, "has taken fork", 0);
 		print(this, "is eating", 0);
 
 		pthread_mutex_lock(this->check_death);
@@ -140,17 +140,9 @@ void	call_this()
 	system("leaks philo");
 }
 
-int	check_min_eats(t_philo	*philos)
+int	check_min_eats(t_philo	*philo)
 {
-	int	i;
-	int	all_done;
-
-	i = 0;
-	all_done = 0;
-	while (i < philos->info->nb_of_philos)
-		if (philos[i++].nb_eats < (long long)philos->info->min_eats)
-			return (0);
-	return (1);
+	return (philo->nb_eats >= philo->info->min_eats);
 }
 
 int	main(int argc, char **argv)
@@ -176,18 +168,18 @@ int	main(int argc, char **argv)
 	if (!start_sim(philos, info.nb_of_philos))
 		return (free(philos), -1);
 	i = 0;
+	int	philos_satisfied = 0;
 	while (1)
 	{
 		usleep(10);
 		pthread_mutex_lock(philos[i].check_death);
 		if (check_if_dead(&philos[i]))
-		{
-			print(&philos[i], "died", 1);
-			return (0);
-		}
-		if (info.min_eats != -1 && check_min_eats(philos))
-			return (0);
+			return (print(&philos[i], "died", 1), 0);
+		philos_satisfied += (info.min_eats != -1) && check_min_eats(&philos[i]);
 		pthread_mutex_unlock(philos[i].check_death);
+		if (philos_satisfied >= info.nb_of_philos)
+			return (0);
 		i = (i + 1) % info.nb_of_philos;
+		philos_satisfied = (i != 0) * philos_satisfied;
 	}
 }

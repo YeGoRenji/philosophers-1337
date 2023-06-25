@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 17:41:20 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/24 19:03:58 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/25 11:25:49 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	milsleep(long long time_in_ms)
 	long long	start;
 
 	start = get_current_ms();
-	while (get_current_ms() - start > time_in_ms)
+	while (get_current_ms() - start < time_in_ms)
 		usleep(100);
 }
 // void	milsleep(unsigned int miliseconds)
