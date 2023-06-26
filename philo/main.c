@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:44:46 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/24 17:41:26y ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/26 01:36:03 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "include/parser.h"
 #include "include/debug.h"
 #include "include/time_utils.h"
+#include <stdbool.h>
 
 
 int	check_if_dead(t_philo *philo)
@@ -37,25 +38,53 @@ void	print(t_philo *philo, char *doing, int ded)
 		pthread_mutex_unlock(philo->print_mutex);
 }
 
+void	take_forks(t_philo *philo, bool right_first)
+{
+	if (right_first)
+	{
+		pthread_mutex_lock(philo->right_fork);
+		print(philo, "has taken right fork", 0); //! Remove Right
+		pthread_mutex_lock(philo->left_fork);
+		print(philo, "has taken left fork", 0); //! Remove left
+	}
+	else
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print(philo, "has taken left fork", 0); //! Remove left
+		pthread_mutex_lock(philo->right_fork);
+		print(philo, "has taken right fork", 0); //! Remove Right
+	}
+
+}
+
+void	hand_forks(t_philo *philo, bool right_first)
+{
+	if (right_first)
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+	}
+}
+
 void	*philo_routine(void *arg)
 {
 	t_philo	*this;
 	int	*return_val;
 
 	this = (t_philo *)arg;
-	if (this->number % 2 == 0)
-		usleep(1000 * this->info->time_to_eat / 2);
+	// if (this->number % 2 == 0)
+	// 	usleep(1000 * this->info->time_to_eat / 2);
 	return_val = malloc(sizeof(int));
 	*return_val = 0;
 	while (1)
 	{
 		print(this, "is thinking", 0);
-
-		pthread_mutex_lock(this->right_fork);
-		print(this, "has taken right fork", 0); //! Remove Right
-		pthread_mutex_lock(this->left_fork);
-		print(this, "has taken left fork", 0); //! Remove left
-
+		take_forks(this, this->number % 2);
 		print(this, "is eating", 0);
 
 		pthread_mutex_lock(this->check_death);
@@ -64,9 +93,7 @@ void	*philo_routine(void *arg)
 		pthread_mutex_unlock(this->check_death);
 
 		milsleep(this->info->time_to_eat);
-
-		pthread_mutex_unlock(this->left_fork);
-		pthread_mutex_unlock(this->right_fork);
+		hand_forks(this, this->number % 2);
 
 		print(this, "is sleeping", 0);
 		milsleep(this->info->time_to_sleep);

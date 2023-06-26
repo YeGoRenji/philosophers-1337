@@ -1,6 +1,6 @@
 NAME = philo
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread#-fsanitize=address #-g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread#-fsanitize=address # #-g
 
 OBJSFOLDER = objs/
 
