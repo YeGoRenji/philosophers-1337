@@ -6,30 +6,34 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 17:41:20 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/26 01:55:41 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/26 14:21:31 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/time_utils.h"
 
-long long	get_current_ms(void)
+t_time	get_current_ms(void)
 {
 	struct timeval	time;
+	t_time			t;
 
 	gettimeofday(&time, NULL);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	t = time.tv_sec * 1000 + time.tv_usec / 1000;
+	return (t);
 }
 
-long long	get_timestamp(t_info *info)
+t_time	get_relative_time(t_info *info)
 {
-	if (get_current_ms() - info->starting_ms < 0)
-		printf("why %lld ?\n", get_current_ms() - info->starting_ms);
-	return (get_current_ms() - info->starting_ms);
+	t_time	relative_time;
+	relative_time = get_current_ms() - info->starting_ms;
+	// if (relative_time < 0)
+	// 	re
+	return (relative_time);
 }
 
-void	milsleep(long long time_in_ms)
+void	milsleep(t_time time_in_ms)
 {
-	long long	start;
+	t_time	start;
 
 	start = get_current_ms();
 	while (get_current_ms() - start < time_in_ms)

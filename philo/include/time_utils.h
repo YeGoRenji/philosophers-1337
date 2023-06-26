@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 17:43:06 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/24 19:04:20 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/26 13:36:06 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "structs.h"
 
-long long	get_current_ms(void);
-long long	get_timestamp(t_info *info);
-void		milsleep(long long miliseconds);
+t_time		get_current_ms(void);
+t_time		get_relative_time(t_info *info);
+void		milsleep(t_time miliseconds);
 #endif
