@@ -1,6 +1,6 @@
 NAME = philo
 
-CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=thread#-fsanitize=address # #-g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address#-fsanitize=thread # #-g
 
 OBJSFOLDER = objs/
 
@@ -21,7 +21,7 @@ OBJS_FILES = $(SRCS_PARSER:.c=.o) \
 
 OBJS = $(foreach obj, $(OBJS_FILES), $(OBJSFOLDER)$(obj))
 
-GLOBAL_HEADERS = include/structs.h
+GLOBAL_HEADERS = include/structs.h Makefile
 
 all: objs $(NAME)
 

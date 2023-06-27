@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:44:46 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/26 15:23:29by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/27 21:43:35 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "include/parser.h"
 #include "include/debug.h"
 #include "include/time_utils.h"
-
 
 bool	check_if_dead(t_philo *philo)
 {
@@ -269,6 +268,7 @@ int	main(int argc, char **argv)
 	{
 		pthread_join(philos[info.nb_of_philos].thread, NULL);
 	}
+	//! TODO: Print After Join Cause Weird af lol
 	// fflush(stdout);
 	// puts("WTFFFF !");
 	// exit(0);
