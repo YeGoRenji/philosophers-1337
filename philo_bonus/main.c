@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/20 20:44:46 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/30 15:55:45 by ylyoussf         ###   ########.fr       */
+/*   Created: 2023/06/30 16:25:38 by ylyoussf          #+#    #+#             */
+/*   Updated: 2023/06/30 23:55:43 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,11 @@
 #include "include/time_utils.h"
 #include "include/philo_utils.h"
 
-void	call_this(void)
-{
-	system("leaks philo");
-}
-
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	t_info			info;
-	t_philo			*philos;
-	pthread_mutex_t	*forks;
+	// t_philo			*philos;
+	// pthread_mutex_t	*forks;
 
 	// atexit(call_this);
 	if (!check_nb_args(argc))
@@ -34,15 +29,21 @@ int	main(int argc, char **argv)
 		return (-1);
 	printf("Hello Philosophers\n"); //? Debug
 	print_info(&info); //? Debug
-	info.start = get_current_ms();
-	if (!init_mutexes(&info))
-		return (-1);
-	if (!serve_forks(&forks, info.nb_of_philos))
-		return (-1);
-	if (!serve_philos(&philos, forks, &info))
-		return (-1);
-	if (!start_sim(philos, info.nb_of_philos))
-		return (free(philos), free(forks), -1);
-	monitor_threads(philos, &info);
+
+	int pid;
+	//nb = 5;
+	while (info.nb_of_philos--)
+	{
+		pid = fork();
+		if (!pid)
+			break;
+	}
+
+	if (!pid)
+		printf("Hello From Child %d!\n", info.nb_of_philos);
+	else
+		printf("Hello From Parent !\n");
+
 	return (0);
 }
+

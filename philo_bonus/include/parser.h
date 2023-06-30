@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_routine.h                                    :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/29 18:49:34 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/30 13:57:16 by ylyoussf         ###   ########.fr       */
+/*   Created: 2023/06/20 20:51:04 by ylyoussf          #+#    #+#             */
+/*   Updated: 2023/06/29 19:00:50 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ROUTINE_H
-# define PHILO_ROUTINE_H
+#ifndef PARSER_H
+# define PARSER_H
 
 # include "structs.h"
-# include "time_utils.h"
-# include "philo_utils.h"
 
-void	*philo_routine(void *arg);
+int		ft_atoi(const char *str);
+int		ft_isdigit(int c);
+bool	parse_args(int nb_args, char **args, t_info *info);
+bool	check_nb_args(int argc);
+
 #endif

@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_routine.h                                    :+:      :+:    :+:   */
+/*   debug.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/29 18:49:34 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/30 13:57:16 by ylyoussf         ###   ########.fr       */
+/*   Created: 2023/06/21 17:16:55 by ylyoussf          #+#    #+#             */
+/*   Updated: 2023/06/21 17:35:50 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ROUTINE_H
-# define PHILO_ROUTINE_H
+#ifndef DEBUG_H
+# define DEBUG_H
 
 # include "structs.h"
-# include "time_utils.h"
-# include "philo_utils.h"
 
-void	*philo_routine(void *arg);
+void	print_info(t_info *info);
+
 #endif

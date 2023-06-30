@@ -1,21 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_routine.h                                    :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/29 18:49:34 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/30 13:57:16 by ylyoussf         ###   ########.fr       */
+/*   Created: 2022/10/08 18:47:48 by ylyoussf          #+#    #+#             */
+/*   Updated: 2022/10/08 18:50:26 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ROUTINE_H
-# define PHILO_ROUTINE_H
-
-# include "structs.h"
-# include "time_utils.h"
-# include "philo_utils.h"
-
-void	*philo_routine(void *arg);
-#endif
+int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
