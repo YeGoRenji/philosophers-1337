@@ -1,6 +1,6 @@
 NAME = philo
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address#-fsanitize=thread # #-g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=leak #-g #-fsanitize=address  #-g
 
 OBJSFOLDER = objs/
 
@@ -14,9 +14,16 @@ SRCS_DEBUG = debug.c
 
 SRCS_TIME = time_utils.c
 
+SRCS_PHILO_ROUTINE = philo_routine.c
+
+SRCS_PHILO_UTILS = philo_utils.c \
+				   philo_utils_2.c
+
 OBJS_FILES = $(SRCS_PARSER:.c=.o) \
 			 $(SRCS_DEBUG:.c=.o) \
 			 $(SRCS_TIME:.c=.o) \
+			 $(SRCS_PHILO_ROUTINE:.c=.o) \
+			 $(SRCS_PHILO_UTILS:.c=.o) \
 			 main.o
 
 OBJS = $(foreach obj, $(OBJS_FILES), $(OBJSFOLDER)$(obj))
@@ -49,6 +56,15 @@ $(OBJSFOLDER)%.o: src/debug/%.c include/debug.h $(GLOBAL_HEADERS)
 $(OBJSFOLDER)%.o: src/time_utils/%.c include/time_utils.h $(GLOBAL_HEADERS)
 	@echo "Compiling $<..."
 	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJSFOLDER)%.o: src/philo_utils/%.c include/philo_utils.h $(GLOBAL_HEADERS)
+	@echo "Compiling $<..."
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJSFOLDER)%.o: src/philo_routine/%.c include/philo_routine.h $(GLOBAL_HEADERS)
+	@echo "Compiling $<..."
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 
 re: fclean all
 

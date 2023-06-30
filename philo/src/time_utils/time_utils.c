@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 17:41:20 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/26 14:21:31 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:55:39 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,10 @@ t_time	get_current_ms(void)
 	return (t);
 }
 
-t_time	get_relative_time(t_info *info)
+t_time	get_relative_time(t_time relative_to)
 {
 	t_time	relative_time;
-	relative_time = get_current_ms() - info->starting_ms;
-	// if (relative_time < 0)
-	// 	re
+	relative_time = get_current_ms() - relative_to;
 	return (relative_time);
 }
 
@@ -39,7 +37,3 @@ void	milsleep(t_time time_in_ms)
 	while (get_current_ms() - start < time_in_ms)
 		usleep(100);
 }
-// void	milsleep(unsigned int miliseconds)
-// {
-// 	usleep(1000 * miliseconds);
-// }

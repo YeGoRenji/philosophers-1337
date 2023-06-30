@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 17:15:56 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/26 17:55:41 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:54:40 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef struct s_info
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				min_eats;
-	t_time			starting_ms;
-	pthread_mutex_t	print_mutex;
+	t_time			start;
+	// pthread_mutex_t	print_mutex;
 	pthread_mutex_t	stop_mutex;
 	bool			stop;
 }				t_info;
