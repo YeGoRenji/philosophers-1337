@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 17:15:56 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/30 16:22:08 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/01 17:40:20 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 # include <stdint.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <semaphore.h>
 # include <pthread.h>
+# include <fcntl.h>
 # include <stdbool.h>
 
 typedef long long	t_time;
