@@ -1,6 +1,18 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/07/03 18:43:09 by ylyoussf          #+#    #+#              #
+#    Updated: 2023/07/03 21:41:29 by ylyoussf         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = philo
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread #-g #-fsanitize=address  #-g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=thread #-g  #-fsanitize=address  
 
 OBJSFOLDER = objs/
 
@@ -8,6 +20,7 @@ OS := $(shell uname -s)
 
 SRCS_PARSER = ft_atoi.c \
 			  ft_isdigit.c \
+			  ft_memcmp.c \
 			  parser.c
 
 SRCS_DEBUG = debug.c

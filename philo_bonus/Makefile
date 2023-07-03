@@ -7,6 +7,7 @@ OBJSFOLDER = objs/
 OS := $(shell uname -s)
 
 SRCS_PARSER = ft_atoi.c \
+			  ft_memcmp.c \
 			  ft_isdigit.c \
 			  parser.c
 

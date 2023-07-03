@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:14:29 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/30 16:13:02 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/03 19:04:35 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 bool	check_if_dead(t_philo *philo)
 {
 	long long	time_not_eating;
-
+	
+	if(philo->last_eat == -1)
+		return 0;
 	time_not_eating = get_relative_time(philo->info->start) - philo->last_eat;
 	return (time_not_eating > (long long)philo->info->time_to_die);
 }
@@ -43,7 +45,7 @@ bool	serve_philos(t_philo **philos, pthread_mutex_t *forks, t_info *info)
 		(*philos)[i].left_fork = forks + i;
 		(*philos)[i].right_fork = forks + (i + 1) % info->nb_of_philos;
 		(*philos)[i].info = info;
-		(*philos)[i].last_eat = 0;
+		(*philos)[i].last_eat = -1;
 		(*philos)[i].nb_eats = 0;
 		if (pthread_mutex_init(&(*philos)[i].death_mutex, NULL))
 			return (false);
@@ -54,12 +56,11 @@ bool	serve_philos(t_philo **philos, pthread_mutex_t *forks, t_info *info)
 
 bool	start_sim(t_philo *philos, int nb_philos)
 {
+	philos->info->start = get_current_ms();
 	while (nb_philos--)
 	{
 		if (pthread_create(&philos[nb_philos].thread, NULL,
 				&philo_routine, &philos[nb_philos]))
-			return (false);
-		if (pthread_detach(philos[nb_philos].thread))
 			return (false);
 	}
 	return (true);
@@ -72,7 +73,7 @@ void	monitor_threads(t_philo *philos, t_info *info)
 
 	philos_satisfied = 0;
 	i = 0;
-	while (true)
+	while (666)
 	{
 		pthread_mutex_lock(&philos[i].death_mutex);
 		if (check_if_dead(&philos[i]))
@@ -91,5 +92,6 @@ void	monitor_threads(t_philo *philos, t_info *info)
 		}
 		i = (i + 1) % info->nb_of_philos;
 		philos_satisfied = (i != 0) * philos_satisfied;
+		// usleep(100);
 	}
 }
