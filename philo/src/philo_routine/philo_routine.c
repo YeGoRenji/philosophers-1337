@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 18:50:57 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/03 19:08:13 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/04 00:58:04 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,17 @@ void	*philo_routine(void *arg)
 		this->last_eat = 0;
 		print(this, "is thinking", 0);
 		print(this, "has taken a fork", 0);
-		usleep(this->info->time_to_die);
+		milsleep(this->info->time_to_die);
 		return (NULL);
 	}
 	while (true)
 	{
 		print(this, "is thinking", 0);
 		take_forks(this, this->number % 2);
-		// take_forks(this, 0);
 		print(this, "is eating", 0);
 		eat(this);
 		milsleep(this->info->time_to_eat);
 		hand_forks(this, this->number % 2);
-		// hand_forks(this, 0);
 		print(this, "is sleeping", 0);
 		milsleep(this->info->time_to_sleep);
 		if (check_if_stop(this->info))

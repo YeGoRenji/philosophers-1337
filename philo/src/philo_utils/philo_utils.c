@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:14:29 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/03 19:04:35 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/04 00:52:23 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,5 @@ void	monitor_threads(t_philo *philos, t_info *info)
 		}
 		i = (i + 1) % info->nb_of_philos;
 		philos_satisfied = (i != 0) * philos_satisfied;
-		// usleep(100);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 17:41:20 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/03 15:46:38 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/04 00:56:39 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ void	milsleep(t_time time_in_ms)
 
 	start = get_current_ms();
 	while (get_relative_time(start) < time_in_ms)
-		usleep(200);
+		usleep(100);
 }
