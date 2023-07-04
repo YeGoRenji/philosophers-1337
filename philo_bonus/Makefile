@@ -1,6 +1,13 @@
 NAME = philo_bonus
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread #-g #-fsanitize=address  #-g
+# SNTZ = -fsanitize=thread
+
+CFLAGS = -Wall -Wextra -Werror $(SNTZ) #-g #-fsanitize=address
+
+
+ifeq ($(SNTZ), -fsanitize=thread)
+	PRINT = "FSANITIZE IS ON"
+endif
 
 OBJSFOLDER = objs/
 
@@ -36,6 +43,9 @@ objs:
 
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
+	@printf "\033[0;31m"
+	@printf ""$(ccred)$(PRINT)$(ccend)
+	@printf "\033[0m\n" -e
 
 $(OBJSFOLDER)%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

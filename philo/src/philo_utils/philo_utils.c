@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:14:29 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/04 00:52:23 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/04 16:03:01 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 bool	check_if_dead(t_philo *philo)
 {
 	long long	time_not_eating;
-	
-	if(philo->last_eat == -1)
-		return 0;
+
+	if (philo->last_eat == -1)
+		return (false);
 	time_not_eating = get_relative_time(philo->info->start) - philo->last_eat;
 	return (time_not_eating > (long long)philo->info->time_to_die);
 }

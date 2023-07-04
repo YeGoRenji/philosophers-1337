@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 17:15:56 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/01 17:40:20 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/04 19:21:15 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <semaphore.h>
-# include <pthread.h>
 # include <fcntl.h>
 # include <stdbool.h>
+# include <signal.h>
+# define FORKS "/forks"
 
 typedef long long	t_time;
 typedef struct s_info
@@ -32,20 +33,16 @@ typedef struct s_info
 	int				time_to_sleep;
 	int				min_eats;
 	t_time			start;
-	pthread_mutex_t	stop_mutex;
 	bool			stop;
 }				t_info;
 
 typedef struct s_philo
 {
 	int				number;
-	pthread_t		thread;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
 	t_info			*info;
 	t_time			last_eat;
 	long			nb_eats;
-	pthread_mutex_t	death_mutex;
+	sem_t			*forks;
 }				t_philo;
 
 #endif
