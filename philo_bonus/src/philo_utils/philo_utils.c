@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 01:29:54 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/04 17:18:41 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/05 01:50:12 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,37 @@ sem_t	*init_semaphore(t_info *info)
 	if (sem == SEM_FAILED)
 		(printf("Error: sem_open failed\n"), exit(-1));
 	return (sem);
+}
+
+bool	check_if_stop(t_philo *philo)
+{
+	long long	time_not_eating;
+	
+	if(philo->last_eat == -1)
+		return (false);
+	time_not_eating = get_relative_time(philo->info->start) - philo->last_eat;
+	return (time_not_eating > (long long)philo->info->time_to_die);
+	// TODO : CHECK min_eats
+}
+
+void	die(t_philo *philo)
+{
+	print(philo, "died");
+	exit(69);
+}
+
+void	milsleep_check(t_philo *philo, t_time time_in_ms)
+{
+	t_time	start;
+
+	start = get_current_ms();
+	while (get_current_ms() - start < time_in_ms)
+	{
+		usleep(100);
+		if (check_if_stop(philo))
+		{
+			die(philo);
+			exit(69);
+		}
+	}
 }
