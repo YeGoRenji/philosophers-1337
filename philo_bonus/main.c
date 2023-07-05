@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:25:38 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/05 01:54:17 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/05 21:33:01 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,65 +15,77 @@
 #include "include/debug.h"
 #include "include/time_utils.h"
 #include "include/philo_utils.h"
+#include <stdlib.h>
 
-void	setup_philo(t_philo *philo, t_info *info, int number, sem_t *forks)
+t_philo	*setup_philo(t_philo *philo, t_info *info, int number)
 {
 	philo->info = info;
 	philo->number = number;
 	philo->nb_eats = 0;
 	philo->last_eat = -1;
-	philo->forks = forks;
+	return (philo);
 }
 
 void	take_forks(t_philo *philo)
 {
-	sem_wait(philo->forks);
-	print(philo, "has taken a fork");
-	sem_wait(philo->forks);
-	print(philo, "has taken a fork");
+	sem_wait(philo->info->forks);
+	print(philo, "has taken a fork", 0);
+	sem_wait(philo->info->forks);
+	print(philo, "has taken a fork", 0);
 }
 
 void	hand_forks(t_philo *philo)
 {
-	sem_post(philo->forks);
-	sem_post(philo->forks);
+	sem_post(philo->info->forks);
+	sem_post(philo->info->forks);
 }
 
 void	eat(t_philo *philo)
 {
 	philo->last_eat = get_relative_time(philo->info->start);
 	philo->nb_eats++;
+	if (philo->info->min_eats != -1)
+		if (philo->nb_eats >= philo->info->min_eats)
+			(hand_forks(philo), exit(0));
 }
 
-void	philo_routine(t_info *info, int number, sem_t *forks)
+
+void	clean(t_info *info)
+{
+	sem_close(info->forks);
+	sem_close(info->print);
+	sem_unlink(FORKS);
+	sem_unlink(PRINT);
+}
+
+void	philo_routine(t_info *info, int number)
 {
 	t_philo	philo;
 	t_philo	*this;
 
-	printf("Hello Am child %d\n", number);
-	setup_philo(&philo, info, number, forks);
-	this = &philo;
+	// printf("Hello Am child %d\n", number);
+	// TODO : Should I Fix Deadlock ?
+	this = setup_philo(&philo, info, number);
 	if (this->info->nb_of_philos == 1)
 	{
 		this->last_eat = 0;
-		print(this, "is thinking");
-		print(this, "has taken a fork");
+		print(this, "is thinking", 0);
+		print(this, "has taken a fork", 0);
 		milsleep_check(this, this->info->time_to_die);
 		die(this);
 	}
 	while (true)
 	{
-		print(this, "is thinking");
+		print(this, "is thinking", 0);
 		take_forks(this);
-		print(this, "is eating");
+		print(this, "is eating", 0);
 		eat(this);
 		milsleep_check(this, this->info->time_to_eat);
 		hand_forks(this);
-		print(this, "is sleeping");
+		print(this, "is sleeping", 0);
 		milsleep_check(this, this->info->time_to_sleep);
-		// if (check_if_stop(this))
-		// 	die(this);
 	}
+	clean(info);
 	exit(0);
 }
 
@@ -87,33 +99,32 @@ bool	check_nb_args(int argc)
 	return (true);
 }
 
-void	monitor_processes(t_info *info, pid_t *pids)
+
+void	monitor_processes(t_info *info)
 {
 	int 	stat_loc;
 	int		exit_status;
 	int		i;
-	pid_t	current;
+	// pid_t	current;
 
-	printf("Hello From Parent !\n");
+	// printf("Hello From Parent !\n");
 
 	i = 0;
 	exit_status = 0;
 	while (i++ < info->nb_of_philos)
 	{
-		current = waitpid(-1, &stat_loc, 0);
+		waitpid(-1, &stat_loc, 0);
 		exit_status = WEXITSTATUS(stat_loc);
-		printf("exit_status %d\n", exit_status);
+		// printf("exit_status %d\n", exit_status);
 		if (exit_status == 69)
+		{
+			printf("Someone Died !\n");
+			clean(info);
+			kill(0, SIGINT);
 			break ;
+		}
 	}
-	i = 0;
-	while (i < info->nb_of_philos)
-	{
-		if (pids[i] != current)
-			kill(pids[i], SIGKILL);
-		i++;
-	}
-	printf("Main Process Finishing !\n");
+	clean(info);
 }
 
 bool	is_parent(pid_t *pids, int size)
@@ -126,36 +137,35 @@ bool	is_parent(pid_t *pids, int size)
 	return (true);
 }
 
+int	serve_philos(pid_t *pid, t_info *info)
+{
+	int	i;
+
+	i = 0;
+	*pid = 0x69;
+	while (*pid && i++ < info->nb_of_philos)
+	 	*pid = fork();
+	return (i);
+}
+
 int main(int argc, char **argv)
 {
 	t_info	info;
-	sem_t	*forks;		
-	pid_t	*pids;
+	pid_t	pid;
 	int		i;
 
 	if (!check_nb_args(argc))
 		return (-1);
 	if (!parse_args(argc - 1, argv + 1, &info))
 		return (-1);
-	printf("Hello Philosophers\n"); //? Debug
+	// printf("Hello Philosophers\n"); //? Debug
 	print_info(&info); //? Debug
-	forks = init_semaphore(&info);
-	pids = malloc(info.nb_of_philos * sizeof(int)); // TODO : Protecc
-	i = 0;
+	init_semaphores(&info);
 	info.start = get_current_ms();
-	while (i < info.nb_of_philos)
-	{
-	 	pids[i] = fork(); // TODO : Protecc fork()
-		if (!pids[i])
-			break ;
-		i++;
-	}
-	if (!is_parent(pids, info.nb_of_philos))
-		philo_routine(&info, i + 1, forks);
+	i = serve_philos(&pid, &info);
+	if (!pid)
+		philo_routine(&info, i);
 	else
-		monitor_processes(&info, pids);
-	sem_unlink(FORKS);
-	sem_close(forks);
+		monitor_processes(&info);
 	return (0);
 }
-

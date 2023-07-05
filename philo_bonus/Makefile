@@ -1,6 +1,6 @@
 NAME = philo_bonus
 
-# SNTZ = -fsanitize=thread
+# SNTZ = -fsanitize=address
 
 CFLAGS = -Wall -Wextra -Werror $(SNTZ) #-g #-fsanitize=address
 

@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 17:15:56 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/04 19:21:15 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/05 20:47:55 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdbool.h>
 # include <signal.h>
 # define FORKS "/forks"
+# define PRINT "/print"
 
 typedef long long	t_time;
 typedef struct s_info
@@ -34,6 +35,8 @@ typedef struct s_info
 	int				min_eats;
 	t_time			start;
 	bool			stop;
+	sem_t			*forks;
+	sem_t			*print;
 }				t_info;
 
 typedef struct s_philo
@@ -42,7 +45,6 @@ typedef struct s_philo
 	t_info			*info;
 	t_time			last_eat;
 	long			nb_eats;
-	sem_t			*forks;
 }				t_philo;
 
 #endif

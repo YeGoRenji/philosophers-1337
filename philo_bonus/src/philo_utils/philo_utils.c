@@ -6,31 +6,35 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 01:29:54 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/05 01:50:12 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/05 20:59:18 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo_utils.h"
 
-void	print(t_philo *philo, char *doing)
+void	print(t_philo *philo, char *doing, bool lock)
 {
-	// bool	stop;
-
+	sem_wait(philo->info->print);
 	printf("%lld\t%d\t%s\n",
 		get_relative_time(philo->info->start),
 		philo->number,
 		doing);
+	if (!lock)
+		sem_post(philo->info->print);
 }
 
-sem_t	*init_semaphore(t_info *info)
+void	init_semaphores(t_info *info)
 {
-	sem_t	*sem;
 	sem_unlink(FORKS);
-	sem = sem_open(FORKS, O_CREAT, 0644, info->nb_of_philos);
-	if (sem == SEM_FAILED)
+	sem_unlink(PRINT);
+	info->forks = sem_open(FORKS, O_CREAT, 0644, info->nb_of_philos);
+	if (info->forks == SEM_FAILED)
 		(printf("Error: sem_open failed\n"), exit(-1));
-	return (sem);
+	info->print = sem_open(PRINT, O_CREAT, 0644, 1);
+	if (info->print == SEM_FAILED)
+		(printf("Error: sem_open failed\n"), exit(-1));
 }
+
 
 bool	check_if_stop(t_philo *philo)
 {
@@ -40,12 +44,11 @@ bool	check_if_stop(t_philo *philo)
 		return (false);
 	time_not_eating = get_relative_time(philo->info->start) - philo->last_eat;
 	return (time_not_eating > (long long)philo->info->time_to_die);
-	// TODO : CHECK min_eats
 }
 
 void	die(t_philo *philo)
 {
-	print(philo, "died");
+	print(philo, "died", 1);
 	exit(69);
 }
 
@@ -58,9 +61,6 @@ void	milsleep_check(t_philo *philo, t_time time_in_ms)
 	{
 		usleep(100);
 		if (check_if_stop(philo))
-		{
 			die(philo);
-			exit(69);
-		}
 	}
 }
