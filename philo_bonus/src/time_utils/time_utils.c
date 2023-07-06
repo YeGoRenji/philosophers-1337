@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 17:41:20 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/05 01:37:01 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:29:01 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,3 @@ t_time	get_relative_time(t_time relative_to)
 	relative_time = get_current_ms() - relative_to;
 	return (relative_time);
 }
-

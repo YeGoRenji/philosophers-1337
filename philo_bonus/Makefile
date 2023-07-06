@@ -1,6 +1,6 @@
 NAME = philo_bonus
 
-# SNTZ = -fsanitize=address
+# SNTZ = -fsanitize=:q
 
 CFLAGS = -Wall -Wextra -Werror $(SNTZ) #-g #-fsanitize=address
 
@@ -22,14 +22,16 @@ SRCS_DEBUG = debug.c
 
 SRCS_TIME = time_utils.c
 
-# SRCS_PHILO_ROUTINE = philo_routine.c
+SRCS_PHILO_ROUTINE = philo_routine.c
 
-SRCS_PHILO_UTILS = philo_utils.c
+SRCS_PHILO_UTILS = philo_utils.c \
+				   philo_utils_2.c
 
 OBJS_FILES = $(SRCS_PARSER:.c=.o) \
 			 $(SRCS_DEBUG:.c=.o) \
 			 $(SRCS_TIME:.c=.o) \
 			 $(SRCS_PHILO_UTILS:.c=.o) \
+			 $(SRCS_PHILO_ROUTINE:.c=.o) \
 			 main.o
 
 OBJS = $(foreach obj, $(OBJS_FILES), $(OBJSFOLDER)$(obj))
@@ -70,9 +72,9 @@ $(OBJSFOLDER)%.o: src/philo_utils/%.c include/philo_utils.h $(GLOBAL_HEADERS)
 	@echo "Compiling $<..."
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-# $(OBJSFOLDER)%.o: src/philo_routine/%.c include/philo_routine.h $(GLOBAL_HEADERS)
-# 	@echo "Compiling $<..."
-# 	@$(CC) $(CFLAGS) -c $< -o $@
+$(OBJSFOLDER)%.o: src/philo_routine/%.c include/philo_routine.h $(GLOBAL_HEADERS)
+	@echo "Compiling $<..."
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 re: fclean all
 

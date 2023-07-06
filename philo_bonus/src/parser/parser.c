@@ -6,12 +6,11 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:51:17 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/04 13:19:38 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:26:15 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parser.h"
-
 
 int	handle_int(char *str_number, int len)
 {

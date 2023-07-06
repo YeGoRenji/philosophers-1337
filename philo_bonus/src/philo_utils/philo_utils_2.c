@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils.h                                      :+:      :+:    :+:   */
+/*   philo_utils_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/29 19:13:09 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/06 18:24:52 by ylyoussf         ###   ########.fr       */
+/*   Created: 2023/07/06 18:28:29 by ylyoussf          #+#    #+#             */
+/*   Updated: 2023/07/06 18:28:33 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_UTILS_H
-# define PHILO_UTILS_H
+#include "../../include/philo_utils.h"
 
-# include "structs.h"
-# include "time_utils.h"
-# include <sys/wait.h>
-
-void	init_semaphores(t_info *info);
-void	print(t_philo *philo, char *doing, bool lock);
-void	milsleep_check(t_philo *philo, t_time time_in_ms);
-void	die(t_philo *philo);
-void	clean(t_info *info);
-#endif
+void	clean(t_info *info)
+{
+	sem_close(info->forks);
+	sem_close(info->print);
+	sem_unlink(FORKS);
+	sem_unlink(PRINT);
+}
