@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:14:29 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/04 16:03:01 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/07 20:53:45 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	monitor_threads(t_philo *philos, t_info *info)
 
 	philos_satisfied = 0;
 	i = 0;
-	while (666)
+	while (69)
 	{
 		pthread_mutex_lock(&philos[i].death_mutex);
 		if (check_if_dead(&philos[i]))

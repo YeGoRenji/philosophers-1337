@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 18:50:57 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/04 00:58:04 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/07 20:56:04 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ void	*philo_routine(void *arg)
 	this = (t_philo *)arg;
 	if (this->info->nb_of_philos == 1)
 	{
+		pthread_mutex_lock(&this->death_mutex);
 		this->last_eat = 0;
+		pthread_mutex_unlock(&this->death_mutex);
 		print(this, "is thinking", 0);
 		print(this, "has taken a fork", 0);
 		milsleep(this->info->time_to_die);

@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:28:29 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/06 18:28:33 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/07 20:52:59 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,9 @@ void	clean(t_info *info)
 	sem_close(info->print);
 	sem_unlink(FORKS);
 	sem_unlink(PRINT);
+}
+
+void	ft_reaper(t_philo *philo)
+{
+
 }

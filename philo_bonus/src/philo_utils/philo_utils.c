@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 01:29:54 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/06 19:12:06 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/07 18:18:03 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	milsleep_check(t_philo *philo, t_time time_in_ms)
 	while (get_current_ms() - start < time_in_ms)
 	{
 		usleep(100);
+		// TODO : Remove this and actually check with threads !
 		if (check_if_stop(philo))
 			die(philo);
 	}
