@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 17:15:56 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/05 20:47:55 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 00:53:56 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdint.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <pthread.h>
 # include <semaphore.h>
 # include <fcntl.h>
 # include <stdbool.h>

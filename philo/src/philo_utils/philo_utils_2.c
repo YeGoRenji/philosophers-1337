@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 01:29:54 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/03 11:27:39 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 01:47:22 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,16 @@ void	stop(t_info *info, bool boolean)
 	pthread_mutex_lock(&info->stop_mutex);
 	info->stop = boolean;
 	pthread_mutex_unlock(&info->stop_mutex);
+}
+
+bool	check_if_stop(t_info *info)
+{
+	bool	stop;
+
+	pthread_mutex_lock(&info->stop_mutex);
+	stop = info->stop;
+	pthread_mutex_unlock(&info->stop_mutex);
+	return (stop);
 }
 
 bool	init_mutexes(t_info *info)

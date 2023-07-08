@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:13:09 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/02 17:02:59 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 01:47:39 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ bool	init_mutexes(t_info *info);
 bool	check_min_eats(t_philo	*philo);
 void	print(t_philo *philo, char *doing, bool ded);
 void	stop(t_info *info, bool boolean);
+bool	check_if_stop(t_info *info);
 void	monitor_threads(t_philo *philos, t_info *info);
 #endif

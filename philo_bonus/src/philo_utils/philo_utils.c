@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 01:29:54 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/07 18:18:03 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 01:36:49 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,17 @@ bool	check_if_stop(t_philo *philo)
 	return (time_not_eating > (long long)philo->info->time_to_die);
 }
 
+t_philo	*setup_philo(t_philo *philo, t_info *info, int number)
+{
+	philo->info = info;
+	philo->number = number;
+	philo->nb_eats = 0;
+	philo->last_eat = -1;
+	return (philo);
+}
+
 void	die(t_philo *philo)
 {
 	print(philo, "died", 1);
-	exit(69);
-}
-
-void	milsleep_check(t_philo *philo, t_time time_in_ms)
-{
-	t_time	start;
-
-	start = get_current_ms();
-	while (get_current_ms() - start < time_in_ms)
-	{
-		usleep(100);
-		// TODO : Remove this and actually check with threads !
-		if (check_if_stop(philo))
-			die(philo);
-	}
+	(clean(philo->info), exit(69));
 }

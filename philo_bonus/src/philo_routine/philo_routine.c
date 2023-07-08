@@ -6,20 +6,11 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:26:34 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/06 20:39:03 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 01:41:09 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo_routine.h"
-
-t_philo	*setup_philo(t_philo *philo, t_info *info, int number)
-{
-	philo->info = info;
-	philo->number = number;
-	philo->nb_eats = 0;
-	philo->last_eat = -1;
-	return (philo);
-}
 
 void	take_forks(t_philo *philo)
 {
@@ -41,36 +32,40 @@ void	eat(t_philo *philo)
 	philo->nb_eats++;
 	if (philo->info->min_eats != -1)
 		if (philo->nb_eats >= philo->info->min_eats)
-			(hand_forks(philo), exit(0));
+			(hand_forks(philo), clean(philo->info), exit(0));
+}
+
+void	handle_one_philo(t_philo *this)
+{
+	this->last_eat = 0;
+	print(this, "is thinking", 0);
+	print(this, "has taken a fork", 0);
+	milsleep(this->info->time_to_die);
+	die(this);
 }
 
 void	philo_routine(t_info *info, int number)
 {
-	t_philo	philo;
-	t_philo	*this;
+	t_philo		philo;
+	t_philo		*this;
+	pthread_t	reaper;
 
-	// TODO : Should I Fix Deadlock ?
 	if (number % 2 == 0)
 		usleep(200);
 	this = setup_philo(&philo, info, number);
+	if (pthread_create(&reaper, NULL, ft_reaper, &philo))
+		clean(this->info);
 	if (this->info->nb_of_philos == 1)
-	{
-		this->last_eat = 0;
-		print(this, "is thinking", 0);
-		print(this, "has taken a fork", 0);
-		milsleep_check(this, this->info->time_to_die);
-		die(this);
-	}
+		handle_one_philo(this);
 	while (true)
 	{
 		print(this, "is thinking", 0);
 		take_forks(this);
 		print(this, "is eating", 0);
 		eat(this);
-		milsleep_check(this, this->info->time_to_eat);
+		milsleep(this->info->time_to_eat);
 		hand_forks(this);
 		print(this, "is sleeping", 0);
-		milsleep_check(this, this->info->time_to_sleep);
+		milsleep(this->info->time_to_sleep);
 	}
-	clean(info);
 }

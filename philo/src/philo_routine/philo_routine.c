@@ -6,21 +6,11 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 18:50:57 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/07 20:56:04 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 01:49:56 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo_routine.h"
-
-bool	check_if_stop(t_info *info)
-{
-	bool	stop;
-
-	pthread_mutex_lock(&info->stop_mutex);
-	stop = info->stop;
-	pthread_mutex_unlock(&info->stop_mutex);
-	return (stop);
-}
 
 void	take_forks(t_philo *philo, bool right_first)
 {
@@ -52,21 +42,24 @@ void	eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->death_mutex);
 }
 
+void	*handle_one_philo(t_philo *this)
+{
+	pthread_mutex_lock(&this->death_mutex);
+	this->last_eat = 0;
+	pthread_mutex_unlock(&this->death_mutex);
+	print(this, "is thinking", 0);
+	print(this, "has taken a fork", 0);
+	milsleep(this->info->time_to_die);
+	return (NULL);
+}
+
 void	*philo_routine(void *arg)
 {
 	t_philo	*this;
 
 	this = (t_philo *)arg;
 	if (this->info->nb_of_philos == 1)
-	{
-		pthread_mutex_lock(&this->death_mutex);
-		this->last_eat = 0;
-		pthread_mutex_unlock(&this->death_mutex);
-		print(this, "is thinking", 0);
-		print(this, "has taken a fork", 0);
-		milsleep(this->info->time_to_die);
-		return (NULL);
-	}
+		return (handle_one_philo(this));
 	while (true)
 	{
 		print(this, "is thinking", 0);

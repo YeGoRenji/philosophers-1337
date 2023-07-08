@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:25:38 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/07 20:21:12 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 01:39:55 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ bool	check_nb_args(int argc)
 
 void	monitor_processes(t_info *info)
 {
-	int 	stat_loc;
-	int		exit_status;
-	int		i;
+	int	stat_loc;
+	int	exit_status;
+	int	i;
 
 	i = 0;
 	exit_status = 0;
@@ -57,11 +57,11 @@ int	serve_philos(pid_t *pid, t_info *info)
 	i = 0;
 	*pid = 0x69;
 	while (*pid && i++ < info->nb_of_philos)
-	 	*pid = fork();
+		*pid = fork();
 	return (i);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_info	info;
 	pid_t	pid;

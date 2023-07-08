@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 17:41:20 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/04 00:56:39 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 01:45:42 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ t_time	get_relative_time(t_time relative_to)
 {
 	t_time	relative_time;
 
-	t_time current = get_current_ms();
-	// printf("get: %lld, rel_to: %lld\n", current, relative_to);
-	relative_time = current - relative_to;
+	relative_time = get_current_ms() - relative_to;
 	return (relative_time);
 }
 

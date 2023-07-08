@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:28:29 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/07 20:52:59 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 01:28:16 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,16 @@ void	clean(t_info *info)
 	sem_unlink(PRINT);
 }
 
-void	ft_reaper(t_philo *philo)
+void	*ft_reaper(void *arg)
 {
+	t_philo	*philo;
 
+	philo = (t_philo *)arg;
+	while (true)
+	{
+		usleep(20);
+		if (check_if_stop(philo))
+			die(philo);
+	}
+	return (NULL);
 }
