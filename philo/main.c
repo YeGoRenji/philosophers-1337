@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:44:46 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/06 16:25:29 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 15:49:54 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ void	wait_and_clean(t_philo *philos, pthread_mutex_t *forks, t_info *info)
 {
 	int	i;
 
-	// printf("Main thread is joining !..\n");
 	i = 0;
 	while (i < info->nb_of_philos)
 		pthread_join(philos[i++].thread, NULL);
-	// printf("Main thread is destroying !..\n");
 	i = 0;
 	while (i < info->nb_of_philos)
 	{
@@ -33,7 +31,6 @@ void	wait_and_clean(t_philo *philos, pthread_mutex_t *forks, t_info *info)
 		i++;
 	}
 	pthread_mutex_destroy(&info->stop_mutex);
-	// printf("Main thread is Done :) !..\n");
 }
 
 bool	check_nb_args(int argc)
@@ -52,13 +49,10 @@ int	main(int argc, char **argv)
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 
-	// atexit(call_this);
 	if (!check_nb_args(argc))
 		return (-1);
 	if (!parse_args(argc - 1, argv + 1, &info))
 		return (-1);
-	printf("Hello Philosophers\n"); //? Debug
-	print_info(&info); //? Debug
 	if (!init_mutexes(&info))
 		return (-1);
 	if (!serve_forks(&forks, info.nb_of_philos))

@@ -1,17 +1,20 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/07/08 16:31:21 by ylyoussf          #+#    #+#              #
+#    Updated: 2023/07/08 16:31:26 by ylyoussf         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = philo_bonus
 
-# SNTZ = -fsanitize=:q
-
-CFLAGS = -Wall -Wextra -Werror $(SNTZ) #-g #-fsanitize=address
-
-
-ifeq ($(SNTZ), -fsanitize=thread)
-	PRINT = "FSANITIZE IS ON"
-endif
+CFLAGS = -Wall -Wextra -Werror  #-g #-fsanitize=address
 
 OBJSFOLDER = objs/
-
-OS := $(shell uname -s)
 
 SRCS_PARSER = ft_atoi.c \
 			  ft_memcmp.c \
@@ -40,14 +43,11 @@ GLOBAL_HEADERS = include/structs.h Makefile
 
 all: objs $(NAME)
 
-objs:
+$(OBJSFOLDER):
 	@mkdir objs
 
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
-	@printf "\033[0;31m"
-	@printf ""$(ccred)$(PRINT)$(ccend)
-	@printf "\033[0m\n" -e
 
 $(OBJSFOLDER)%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

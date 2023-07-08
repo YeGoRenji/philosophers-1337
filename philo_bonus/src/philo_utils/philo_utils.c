@@ -6,11 +6,12 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 01:29:54 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 01:36:49 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 14:13:46 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo_utils.h"
+#include <sys/semaphore.h>
 
 void	print(t_philo *philo, char *doing, bool lock)
 {
@@ -27,19 +28,27 @@ void	init_semaphores(t_info *info)
 {
 	sem_unlink(FORKS);
 	sem_unlink(PRINT);
+	sem_unlink(STOP);
 	info->forks = sem_open(FORKS, O_CREAT, 0644, info->nb_of_philos);
 	if (info->forks == SEM_FAILED)
 		(printf("Error: sem_open failed\n"), exit(-1));
 	info->print = sem_open(PRINT, O_CREAT, 0644, 1);
 	if (info->print == SEM_FAILED)
 		(printf("Error: sem_open failed\n"), exit(-1));
+	info->stop = sem_open(STOP, O_CREAT, 0644, 1);
+	if (info->stop == SEM_FAILED)
+		(printf("Error: sem_open failed\n"), exit(-1));
 }
 
 bool	check_if_stop(t_philo *philo)
 {
 	long long	time_not_eating;
+	t_time		last_eat;
 
-	if (philo->last_eat == -1)
+	sem_wait(philo->info->stop);
+	last_eat = philo->last_eat;
+	sem_post(philo->info->stop);
+	if (last_eat == -1)
 		return (false);
 	time_not_eating = get_relative_time(philo->info->start) - philo->last_eat;
 	return (time_not_eating > (long long)philo->info->time_to_die);
@@ -57,5 +66,5 @@ t_philo	*setup_philo(t_philo *philo, t_info *info, int number)
 void	die(t_philo *philo)
 {
 	print(philo, "died", 1);
-	(clean(philo->info), exit(69));
+	exit(69);
 }

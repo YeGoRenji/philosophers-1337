@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 01:29:54 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 01:47:22 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 12:19:24 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	print(t_philo *philo, char *doing, bool ded)
 		if (stop)
 			return ;
 	}
-	printf("%lld %d %s\n",
+	printf("%lld\t%d\t%s\n",
 		get_relative_time(philo->info->start),
 		philo->number,
 		doing);

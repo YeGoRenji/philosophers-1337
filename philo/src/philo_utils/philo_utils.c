@@ -6,11 +6,12 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:14:29 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/07 20:53:45 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 15:38:57 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo_utils.h"
+#include <unistd.h>
 
 bool	check_if_dead(t_philo *philo)
 {
@@ -75,6 +76,7 @@ void	monitor_threads(t_philo *philos, t_info *info)
 	i = 0;
 	while (69)
 	{
+		usleep(100);
 		pthread_mutex_lock(&philos[i].death_mutex);
 		if (check_if_dead(&philos[i]))
 		{
@@ -86,10 +88,7 @@ void	monitor_threads(t_philo *philos, t_info *info)
 		philos_satisfied += (info->min_eats > 0 && check_min_eats(&philos[i]));
 		pthread_mutex_unlock(&philos[i].death_mutex);
 		if (philos_satisfied >= info->nb_of_philos)
-		{
-			stop(info, true);
-			break ;
-		}
+			return (stop(info, true));
 		i = (i + 1) % info->nb_of_philos;
 		philos_satisfied = (i != 0) * philos_satisfied;
 	}

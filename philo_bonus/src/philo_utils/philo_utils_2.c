@@ -6,18 +6,22 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:28:29 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 01:28:16 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 20:49:48 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo_utils.h"
 
-void	clean(t_info *info)
+void	clean(t_info *info, bool unlink)
 {
 	sem_close(info->forks);
 	sem_close(info->print);
+	sem_close(info->stop);
+	if (!unlink)
+		return ;
 	sem_unlink(FORKS);
 	sem_unlink(PRINT);
+	sem_unlink(STOP);
 }
 
 void	*ft_reaper(void *arg)

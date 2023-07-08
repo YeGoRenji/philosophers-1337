@@ -1,7 +1,0 @@
-{
-	"files.associations": {
-		"parser.h": "c",
-		"philo_utils.h": "c",
-		"philo_routine.h": "c"
-	}
-}

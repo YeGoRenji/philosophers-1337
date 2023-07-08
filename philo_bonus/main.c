@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:25:38 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 01:39:55 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 16:25:28 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,9 @@ void	monitor_processes(t_info *info)
 		waitpid(-1, &stat_loc, 0);
 		exit_status = WEXITSTATUS(stat_loc);
 		if (exit_status == 69)
-		{
-			// printf("Someone Died !\n");
-			clean(info);
-			kill(0, SIGINT);
-			break ;
-		}
+			(clean(info, 1), kill(0, SIGINT));
 	}
-	clean(info);
+	clean(info, 1);
 }
 
 int	serve_philos(pid_t *pid, t_info *info)
@@ -71,8 +66,6 @@ int	main(int argc, char **argv)
 		return (-1);
 	if (!parse_args(argc - 1, argv + 1, &info))
 		return (-1);
-	// printf("Hello Philosophers\n"); //? Debug
-	print_info(&info); //? Debug
 	init_semaphores(&info);
 	info.start = get_current_ms();
 	i = serve_philos(&pid, &info);

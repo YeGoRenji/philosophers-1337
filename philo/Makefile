@@ -6,17 +6,15 @@
 #    By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/03 18:43:09 by ylyoussf          #+#    #+#              #
-#    Updated: 2023/07/03 21:41:29 by ylyoussf         ###   ########.fr        #
+#    Updated: 2023/07/08 20:31:41 by ylyoussf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=thread #-g  #-fsanitize=address  
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=thread #-g  #-fsanitize=address
 
 OBJSFOLDER = objs/
-
-OS := $(shell uname -s)
 
 SRCS_PARSER = ft_atoi.c \
 			  ft_isdigit.c \
@@ -45,7 +43,7 @@ GLOBAL_HEADERS = include/structs.h Makefile
 
 all: objs $(NAME)
 
-objs:
+$(OBJSFOLDER):
 	@mkdir objs
 
 $(NAME): $(OBJS)

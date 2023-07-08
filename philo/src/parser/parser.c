@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:51:17 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 01:44:30 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 16:20:11 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ bool	parse_args(int nb_args, char **args, t_info *info)
 	while (i < nb_args)
 	{
 		struc_members[i] = ft_atoi(args[i]);
-		if (struc_members[i] == 0)
+		if (struc_members[i] < 0)
 			return (print_error(), false);
 		i++;
 	}

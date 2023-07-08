@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 17:15:56 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 00:53:56 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 16:30:47 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <stdint.h>
 # include <sys/time.h>
+# include <sys/wait.h>
 # include <unistd.h>
 # include <pthread.h>
 # include <semaphore.h>
@@ -25,6 +26,7 @@
 # include <signal.h>
 # define FORKS "/forks"
 # define PRINT "/print"
+# define STOP "/stop"
 
 typedef long long	t_time;
 typedef struct s_info
@@ -35,9 +37,9 @@ typedef struct s_info
 	int				time_to_sleep;
 	int				min_eats;
 	t_time			start;
-	bool			stop;
 	sem_t			*forks;
 	sem_t			*print;
+	sem_t			*stop;
 }				t_info;
 
 typedef struct s_philo
