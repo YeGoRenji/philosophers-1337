@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 01:29:54 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 12:19:24 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 23:39:19 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,11 @@
 
 void	print(t_philo *philo, char *doing, bool ded)
 {
-	bool	stop;
-
-	stop = false;
-	if (!ded)
-	{
-		pthread_mutex_lock(&philo->info->stop_mutex);
-		if (philo->info->stop)
-			stop = true;
-		pthread_mutex_unlock(&philo->info->stop_mutex);
-		if (stop)
-			return ;
-	}
+	if (!ded && check_if_stop(philo->info))
+		return ;
+	if (ded)
+		stop(philo->info, true);
+	// TODO : No idea why it still prints...
 	printf("%lld\t%d\t%s\n",
 		get_relative_time(philo->info->start),
 		philo->number,

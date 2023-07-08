@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:44:46 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 15:49:54 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 23:31:34 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	main(int argc, char **argv)
 	if (!serve_forks(&forks, info.nb_of_philos))
 		return (-1);
 	if (!serve_philos(&philos, forks, &info))
-		return (-1);
+		return (free(forks), -1);
 	if (!start_sim(philos, info.nb_of_philos))
 		return (free(philos), free(forks), -1);
 	monitor_threads(philos, &info);

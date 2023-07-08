@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/philo_utils.h"
-#include <sys/semaphore.h>
 
 void	print(t_philo *philo, char *doing, bool lock)
 {

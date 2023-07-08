@@ -6,12 +6,11 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:14:29 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 15:38:57 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/08 23:49:25 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo_utils.h"
-#include <unistd.h>
 
 bool	check_if_dead(t_philo *philo)
 {
@@ -34,7 +33,7 @@ bool	serve_forks(pthread_mutex_t **forks, int nb_philos)
 
 bool	serve_philos(t_philo **philos, pthread_mutex_t *forks, t_info *info)
 {
-	int				i;
+	int	i;
 
 	*philos = malloc(info->nb_of_philos * sizeof(t_philo));
 	if (!philos)
@@ -49,7 +48,8 @@ bool	serve_philos(t_philo **philos, pthread_mutex_t *forks, t_info *info)
 		(*philos)[i].last_eat = -1;
 		(*philos)[i].nb_eats = 0;
 		if (pthread_mutex_init(&(*philos)[i].death_mutex, NULL))
-			return (false);
+			return (free(*philos), false);
+		// TODO : if fail destory other mutexes ?
 		i++;
 	}
 	return (true);
@@ -80,7 +80,6 @@ void	monitor_threads(t_philo *philos, t_info *info)
 		pthread_mutex_lock(&philos[i].death_mutex);
 		if (check_if_dead(&philos[i]))
 		{
-			stop(info, true);
 			print(&philos[i], "died", 1);
 			pthread_mutex_unlock(&philos[i].death_mutex);
 			break ;
