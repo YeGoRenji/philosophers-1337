@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:14:29 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 23:49:25 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/09 18:57:10 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ void	monitor_threads(t_philo *philos, t_info *info)
 		pthread_mutex_lock(&philos[i].death_mutex);
 		if (check_if_dead(&philos[i]))
 		{
-			print(&philos[i], "died", 1);
+			stop(info, true);
+			info->death_state.is_death = true;
+			info->death_state.philo_number = philos[i].number;
+			info->death_state.when = get_relative_time(philos->info->start);
 			pthread_mutex_unlock(&philos[i].death_mutex);
 			break ;
 		}

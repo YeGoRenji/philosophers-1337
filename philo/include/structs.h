@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 17:15:56 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/30 16:22:08 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/09 18:15:46 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@
 # include <stdbool.h>
 
 typedef long long	t_time;
+
+typedef struct s_death_state
+{
+	bool			is_death;
+	int				philo_number;
+	t_time			when;
+}				t_death_state;
+
 typedef struct s_info
 {
 	int				nb_of_philos;
@@ -32,6 +40,7 @@ typedef struct s_info
 	t_time			start;
 	pthread_mutex_t	stop_mutex;
 	bool			stop;
+	t_death_state	death_state;
 }				t_info;
 
 typedef struct s_philo

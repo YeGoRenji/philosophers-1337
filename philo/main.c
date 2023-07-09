@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:44:46 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 23:31:34 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/09 18:22:30 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ void	wait_and_clean(t_philo *philos, pthread_mutex_t *forks, t_info *info)
 	i = 0;
 	while (i < info->nb_of_philos)
 		pthread_join(philos[i++].thread, NULL);
+	if (info->death_state.is_death)
+	{
+		printf("%lld\t%d\t%s\n",
+			info->death_state.when,
+			info->death_state.philo_number,
+			"died");
+	}
 	i = 0;
 	while (i < info->nb_of_philos)
 	{
@@ -49,6 +56,7 @@ int	main(int argc, char **argv)
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 
+	info.death_state.is_death = false;
 	if (!check_nb_args(argc))
 		return (-1);
 	if (!parse_args(argc - 1, argv + 1, &info))

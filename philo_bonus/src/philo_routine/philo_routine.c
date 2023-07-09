@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:26:34 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 16:24:32 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/09 20:58:05 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	eat(t_philo *philo)
 		if (philo->nb_eats >= philo->info->min_eats)
 		{
 			sem_post(philo->info->stop);
-			(hand_forks(philo), clean(philo->info, 0), exit(0));
+			hand_forks(philo);
+			exit(0);
 		}
 	}
 	sem_post(philo->info->stop);

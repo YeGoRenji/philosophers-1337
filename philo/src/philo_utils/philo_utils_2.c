@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 01:29:54 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 23:39:19 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/09 18:16:52 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@ void	print(t_philo *philo, char *doing, bool ded)
 {
 	if (!ded && check_if_stop(philo->info))
 		return ;
-	if (ded)
-		stop(philo->info, true);
-	// TODO : No idea why it still prints...
 	printf("%lld\t%d\t%s\n",
 		get_relative_time(philo->info->start),
 		philo->number,
