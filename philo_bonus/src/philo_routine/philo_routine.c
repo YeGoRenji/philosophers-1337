@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:26:34 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/09 20:58:05 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/10 16:18:28 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,20 @@ void	hand_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	sem_wait(philo->info->stop);
+	sem_wait(philo->stop);
 	philo->last_eat = get_relative_time(philo->info->start);
 	philo->nb_eats++;
 	if (philo->info->min_eats != -1)
 	{
 		if (philo->nb_eats >= philo->info->min_eats)
 		{
-			sem_post(philo->info->stop);
 			hand_forks(philo);
+			sem_post(philo->stop);
+			clean(philo->info, 0);
 			exit(0);
 		}
 	}
-	sem_post(philo->info->stop);
+	sem_post(philo->stop);
 }
 
 void	handle_one_philo(t_philo *this)
@@ -62,9 +63,9 @@ void	philo_routine(t_info *info, int number)
 		usleep(100);
 	this = setup_philo(&philo, info, number);
 	if (pthread_create(&reaper, NULL, ft_reaper, &philo))
-		clean(this->info, 1);
+		return (clean(this->info, 0));
 	if (pthread_detach(reaper))
-		clean(this->info, 1);
+		return (clean(this->info, 0));
 	if (this->info->nb_of_philos == 1)
 		handle_one_philo(this);
 	while (true)

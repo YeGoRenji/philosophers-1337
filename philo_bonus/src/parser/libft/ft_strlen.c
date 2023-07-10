@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/08 18:47:48 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/10 15:39:37 by ylyoussf         ###   ########.fr       */
+/*   Created: 2022/10/09 00:48:46 by ylyoussf          #+#    #+#             */
+/*   Updated: 2023/07/10 15:14:42 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/parser.h"
 
-int	ft_isdigit(int c)
+size_t	ft_strlen(const char *s)
 {
-	return (c >= '0' && c <= '9');
+	int	len;
+
+	len = 0;
+	while (*s++)
+		len++;
+	return (len);
 }

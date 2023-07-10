@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:51:17 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 16:19:16 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/10 15:45:07 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,5 @@ bool	parse_args(int nb_args, char **args, t_info *info)
 	}
 	if (nb_args != 5)
 		info->min_eats = -1;
-	info->stop = false;
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 17:15:56 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 16:30:47 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/10 16:07:06 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct s_info
 	t_time			start;
 	sem_t			*forks;
 	sem_t			*print;
-	sem_t			*stop;
 }				t_info;
 
 typedef struct s_philo
@@ -47,6 +46,7 @@ typedef struct s_philo
 	int				number;
 	t_info			*info;
 	t_time			last_eat;
+	sem_t			*stop;
 	long			nb_eats;
 }				t_philo;
 

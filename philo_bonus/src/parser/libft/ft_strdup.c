@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/08 18:47:48 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/10 15:39:37 by ylyoussf         ###   ########.fr       */
+/*   Created: 2022/10/09 23:43:16 by ylyoussf          #+#    #+#             */
+/*   Updated: 2023/07/10 15:12:29 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/parser.h"
 
-int	ft_isdigit(int c)
+char	*ft_strdup(const char *s1)
 {
-	return (c >= '0' && c <= '9');
+	int		len;
+	char	*target;
+
+	len = ft_strlen(s1);
+	target = malloc(len + 1);
+	if (target)
+	{
+		ft_memcpy(target, s1, len);
+		target[len] = '\0';
+	}
+	return (target);
 }

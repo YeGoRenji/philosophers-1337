@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:13:09 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/08 16:30:18 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/10 16:00:49 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_UTILS_H
 
 # include "time_utils.h"
+# include "parser.h"
 
 void	init_semaphores(t_info *info);
 void	print(t_philo *philo, char *doing, bool lock);

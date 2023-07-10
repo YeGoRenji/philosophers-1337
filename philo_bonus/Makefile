@@ -6,17 +6,22 @@
 #    By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/08 16:31:21 by ylyoussf          #+#    #+#              #
-#    Updated: 2023/07/08 16:31:26 by ylyoussf         ###   ########.fr        #
+#    Updated: 2023/07/10 15:52:29 by ylyoussf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo_bonus
 
-CFLAGS = -Wall -Wextra -Werror  #-g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 
 OBJSFOLDER = objs/
 
 SRCS_PARSER = ft_atoi.c \
+			  ft_itoa.c \
+			  ft_memcpy.c \
+			  ft_strdup.c \
+			  ft_strlen.c \
+			  ft_strjoin.c \
 			  ft_memcmp.c \
 			  ft_isdigit.c \
 			  parser.c

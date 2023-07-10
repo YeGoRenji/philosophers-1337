@@ -6,12 +6,11 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 17:38:02 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/06/18 09:54:07 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/10 15:09:15 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/parser.h"
-#include <stdio.h>
 
 static int	ft_iswhitespace(int c)
 {
