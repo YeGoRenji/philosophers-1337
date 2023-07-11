@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:14:29 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/09 18:57:10 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/11 11:23:26 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,11 @@ bool	serve_philos(t_philo **philos, pthread_mutex_t *forks, t_info *info)
 		(*philos)[i].last_eat = -1;
 		(*philos)[i].nb_eats = 0;
 		if (pthread_mutex_init(&(*philos)[i].death_mutex, NULL))
+		{
+			while (i--)
+				pthread_mutex_destroy(&(*philos)[i].death_mutex);
 			return (free(*philos), false);
-		// TODO : if fail destory other mutexes ?
+		}
 		i++;
 	}
 	return (true);

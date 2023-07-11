@@ -12,7 +12,7 @@
 
 NAME = philo_bonus
 
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g #-fsanitize=address
 
 OBJSFOLDER = objs/
 

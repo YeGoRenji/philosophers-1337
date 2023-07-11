@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:26:34 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/10 16:18:28 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/11 11:14:26 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	eat(t_philo *philo)
 		{
 			hand_forks(philo);
 			sem_post(philo->stop);
-			clean(philo->info, 0);
+			clean_philo(philo);
 			exit(0);
 		}
 	}
@@ -63,9 +63,9 @@ void	philo_routine(t_info *info, int number)
 		usleep(100);
 	this = setup_philo(&philo, info, number);
 	if (pthread_create(&reaper, NULL, ft_reaper, &philo))
-		return (clean(this->info, 0));
+		(clean_philo(this), exit(-1));
 	if (pthread_detach(reaper))
-		return (clean(this->info, 0));
+		(clean_philo(this), exit(-1));
 	if (this->info->nb_of_philos == 1)
 		handle_one_philo(this);
 	while (true)

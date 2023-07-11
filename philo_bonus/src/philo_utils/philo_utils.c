@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 01:29:54 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/10 16:20:23 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/11 11:11:15 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,27 +51,25 @@ bool	check_if_stop(t_philo *philo)
 
 t_philo	*setup_philo(t_philo *philo, t_info *info, int number)
 {
-	char *sem_name;
-	char *number_str;
+	char	*number_str;
 
 	philo->info = info;
 	philo->number = number;
 	philo->nb_eats = 0;
 	philo->last_eat = -1;
 	number_str = ft_itoa(number);
-	sem_name = ft_strjoin("/stop", number_str);
-	sem_unlink(sem_name);
-	philo->stop = sem_open(sem_name, O_CREAT, 0644, 1);
-	(free(sem_name), free(number_str));
-	// TODO : Should I protecc ?
-	// Check if memory is fully freed !
+	philo->stop_str = ft_strjoin("/stop", number_str);
+	sem_unlink(philo->stop_str);
+	philo->stop = sem_open(philo->stop_str, O_CREAT, 0644, 1);
+	free(number_str);
 	if (philo->stop == SEM_FAILED)
-		return (NULL);
+		(printf("Error: sem_open(stop%d)", number), exit(-1));
 	return (philo);
 }
 
 void	die(t_philo *philo)
 {
 	print(philo, "died", 1);
+	clean_philo(philo);
 	exit(69);
 }

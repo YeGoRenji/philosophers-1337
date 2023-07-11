@@ -6,7 +6,7 @@
 /*   By: ylyoussf <ylyoussf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:25:38 by ylyoussf          #+#    #+#             */
-/*   Updated: 2023/07/10 15:45:18 by ylyoussf         ###   ########.fr       */
+/*   Updated: 2023/07/11 10:15:48 by ylyoussf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	monitor_processes(t_info *info)
 	{
 		waitpid(-1, &stat_loc, 0);
 		exit_status = WEXITSTATUS(stat_loc);
-		if (exit_status == 69)
+		if (exit_status)
 			(clean(info, 1), kill(0, SIGINT));
 	}
 	clean(info, 1);
