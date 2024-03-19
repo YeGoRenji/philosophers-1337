@@ -37,7 +37,7 @@ cd philo_bonus/
 make
 ```
 
-How to Run
+## How to Run
 
 Execute the compiled binary with the desired arguments
 ```bash
